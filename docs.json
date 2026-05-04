@@ -1,0 +1,105 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "willow",
+  "name": "Eloqaura",
+  "description": "Guides and resources for Eloqaura communication training programs—executive coaching, public speaking, and team workshops.",
+  "colors": {
+    "primary": "#1B2A4A",
+    "light": "#E8DCC8",
+    "dark": "#0D1829"
+  },
+  "favicon": "/favicon.ico",
+  "icons": {
+    "library": "lucide"
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
+  },
+  "contextual": {
+    "options": ["copy", "view", "assistant"]
+  },
+  "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Home",
+          "icon": "house",
+          "href": "/"
+        },
+        {
+          "anchor": "Contact Us",
+          "icon": "life-buoy",
+          "href": "https://www.eloqaura.com/contact"
+        }
+      ]
+    },
+    "directory": "card",
+    "products": [
+      {
+        "product": "Get Started",
+        "description": "Learn about Eloqaura's philosophy, programs, and how to begin your journey.",
+        "icon": "compass",
+        "groups": [
+          {
+            "group": "Overview",
+            "expanded": true,
+            "root": "introduction",
+            "pages": [
+              "our-approach",
+              "working-with-us"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "Programs",
+        "description": "Explore Eloqaura's communication training programs for individuals and teams.",
+        "icon": "graduation-cap",
+        "groups": [
+          {
+            "group": "Training Programs",
+            "expanded": true,
+            "root": "programs/overview",
+            "pages": [
+              "programs/public-speaking",
+              "programs/team-workshops",
+              "programs/executive-coaching"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "Resources",
+        "description": "Answers to common questions and ways to get in touch with our team.",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Support",
+            "expanded": true,
+            "root": "resources/faq",
+            "pages": [
+              "resources/contact"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [],
+    "primary": {
+      "type": "button",
+      "label": "Explore Programs",
+      "href": "https://www.eloqaura.com/programs-and-services"
+    }
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://linkedin.com/company/eloqaura"
+    }
+  }
+}

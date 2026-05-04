@@ -1,0 +1,46 @@
+{
+  "projectType": "saas",
+  "projectName": "Eloqaura",
+  "projectDescription": "Eloqaura empowers leaders and teams to communicate with clarity, conviction, and purpose through executive coaching, public speaking training, and team workshops.",
+  "theme": "willow",
+  "primaryColor": "#1B2A4A",
+  "lightColor": "#E8DCC8",
+  "darkColor": "#0D1829",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": ["introduction", "our-approach", "working-with-us"]
+      },
+      {
+        "group": "Programs",
+        "pages": [
+          "programs/overview",
+          "programs/public-speaking",
+          "programs/team-workshops",
+          "programs/executive-coaching"
+        ]
+      },
+      {
+        "group": "Resources",
+        "pages": ["resources/faq", "resources/contact"]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Executive communication coaching for top-tier leaders",
+    "Public speaking mastery programs (Presence Amplifier, Storytelling Blueprint)",
+    "Team workshops including Listening Lab and Conflict to Collaboration",
+    "Psychology-rooted approach to transforming mindsets, not just skills",
+    "Tailored programs for corporate teams, executives, and individual leaders"
+  ],
+  "publicApiSurface": [
+    "Team Communication Workshops",
+    "Public Speaking Mastery",
+    "Executive Communication Coaching",
+    "Listening Lab series",
+    "Presence Amplifier program",
+    "Storytelling Blueprint program",
+    "Conflict to Collaboration workshop"
+  ]
+}
