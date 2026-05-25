@@ -45,6 +45,7 @@
             "expanded": true,
             "root": "introduction",
             "pages": [
+              "snapshot",
               "our-approach",
               "working-with-us"
             ]
