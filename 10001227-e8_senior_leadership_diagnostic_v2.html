@@ -389,66 +389,276 @@ const DOMAIN_COLOR = {
 // ─── Client-Side Scoring Engine ───────────────────────────────────────────────
 const MARKERS = {
   Avoidance: [
+    // Explicit deferral
     'more data', 'continue to monitor', 'watch how it', 'gather more information',
     'wait and see', 'not the right time', 'need more context', 'step back and observe',
     'revisit this', 'give it time', 'let it play out', 'defer to their',
     'hold off', 'pending further', 'not yet the moment', 'too early to',
-    'monitor the situation', 'take more time', 'not enough information'
+    'monitor the situation', 'take more time', 'not enough information',
+    // Polished avoidance — sounds prudent, still deferral
+    'let this settle', 'pick my battles', 'stay focused on the next',
+    'not worth escalating', 'avoid premature', 'let the process run',
+    'give this space', 'nothing actionable yet', 'better to wait',
+    'let this run its course', 'allow time for this', 'continue as planned',
+    'see how this develops', 'no need to escalate', 'not constructive to raise',
+    // Collaborative-avoidance — defers to group instead of deciding
+    'let the group decide', 'leave it to the team', 'what the group thinks is best',
+    'consensus will guide', 'defer to the consensus', 'see what the team decides',
+    'let them decide', 'not my place to push this'
   ],
   Compliance: [
+    // Explicit deference
     'follow their lead', 'as directed', 'what they need to hear', 'align with their',
     'respect the hierarchy', 'above my level', 'not my place', 'follow protocol',
     'whatever they decide', 'acknowledge their concern', 'support their decision',
     'stay in my lane', 'what was agreed', 'not appropriate for me', 'defer to the',
-    'honour the process', 'follow the instruction', 'accept their direction'
+    'honour the process', 'follow the instruction', 'accept their direction',
+    // Polished compliance — sounds professional, still deference
+    'support the direction', 'align with leadership', 'not for me to override',
+    'trust the process', 'in line with what', 'consistent with senior',
+    'above my authority', 'follow the mandate', 'behind the decision',
+    'cannot go against', 'the decision has been made', 'respect the seniority',
+    'not my call to', 'what leadership wants', 'in line with the guidance',
+    'not within my remit', 'as the ceo asked', 'as instructed by'
   ],
   Defensive: [
+    // Evidence-as-shield
     'our data shows', 'the evidence shows', 'our methodology', 'i can demonstrate',
     'for the record', 'the facts show', 'independently validated', 'our process was',
     'our track record', 'i want to be clear', 'as i have said', 'clearly shows',
     'our analysis confirms', 'justify', 'correct the record', 'i need to establish',
-    'protect our position', 'the numbers speak', 'rebut', 'counter the claim'
+    'protect our position', 'the numbers speak', 'rebut', 'counter the claim',
+    // Additional defensive patterns
+    'stand by my', 'i dispute', 'factually wrong', 'the record clearly',
+    'want to be on record', 'this misrepresents', 'documented process',
+    'as per the agreed', 'challenge that assertion', 'i would dispute',
+    'let me be absolutely clear', 'i have evidence', 'the documentation shows',
+    'per the methodology', 'our position is correct', 'this is incorrect'
   ],
   Reactive: [
+    // Immediate escalation
     'unacceptable', 'cannot allow', 'will not tolerate', 'need to address this now',
     'escalate immediately', 'push back hard', 'respond directly and firmly',
     'cannot let this', 'strong objection', 'make it clear that this',
     'demand an explanation', 'outraged', 'completely wrong', 'act immediately',
-    'send a firm message', 'i am frustrated', 'this must stop', 'challenge them directly'
+    'send a firm message', 'i am frustrated', 'this must stop', 'challenge them directly',
+    // Additional reactive patterns
+    'this cannot stand', 'deeply concerned and will', 'not going to accept this',
+    'confront this directly', 'immediate consequences', 'will not let this slide',
+    'want this escalated today', 'strong response is needed', 'call this out publicly',
+    'this crosses a line', 'respond immediately and forcefully', 'i am angry',
+    'make an example', 'hold them accountable now', 'fire back'
   ],
   Dominant: [
+    // Authority assertion
     'non-negotiable', 'my decision', 'here is what we will do', 'my position is final',
     'will not be moved', 'my expectation is', 'take control of', 'set the direction',
     'i will not accept', 'firm boundary', 'my authority', 'final decision',
     'not open to', 'i have decided', 'make this clear to', 'i am directing',
-    'i will determine', 'there is no alternative', 'i will set'
+    'i will determine', 'there is no alternative', 'i will set',
+    // Additional dominant patterns
+    'i will handle this', 'leave this to me', 'my call to make', 'under my leadership',
+    'not open for debate', 'direction is set', 'i own this decision',
+    'i expect compliance', 'this is my domain', 'i run this programme',
+    'i am the decision-maker', 'i will communicate the outcome',
+    'clear directive', 'i will not negotiate', 'end of discussion', 'my call'
   ],
   Strategic: [
+    // Positioning and calculation
     'how this will land', 'manage the optics', 'what this signals to', 'frame this to',
     'position this as', 'political capital', 'manage perceptions', 'what serves my',
     'reputational', 'sequence this carefully',
     'framing', 'consider the context', 'think through the implications',
     'navigate', 'manage the narrative', 'position this carefully',
-    'weigh the trade-offs', 'what they actually need', 'how to position'
+    'weigh the trade-offs', 'what they actually need', 'how to position',
+    // Additional strategic patterns
+    'the political reality', 'how they will read this', 'the right moment to',
+    'build the coalition', 'time this carefully', 'control the framing',
+    'protect my credibility', 'what the board wants to see', 'before i respond',
+    'manage the sponsor', 'the message i need to send', 'read the room',
+    'how this lands with', 'map the stakeholders', 'protect my position',
+    'manage how this', 'the optics of this'
   ],
   Collaborative: [
-    'understand their perspective', 'work together', 'genuinely open', 'hear them out',
+    // Genuine engagement (tightened — generic phrases removed)
+    'understand their perspective', 'genuinely open', 'hear them out',
     'share my thinking', 'co-create', 'genuine conversation', 'be transparent about',
     'invite them to', 'ask them what', 'explore together', 'mutual understanding',
-    'acknowledge their', 'joint problem', 'open dialogue', 'genuinely curious',
-    'honest conversation', 'create space for', 'listen to what', 'together we can'
+    'joint problem', 'open dialogue', 'genuinely curious',
+    'honest conversation', 'create space for', 'listen to what', 'together we can',
+    // More specific collaborative signals
+    'genuinely want your view', 'help me understand what you need', 'what am i not seeing',
+    'want to hear your thinking', 'can we think through this together',
+    'what do you need from this', 'hear what is behind', 'genuinely curious about',
+    'your perspective would help', 'want to understand what is driving',
+    'hear you out fully', 'your read on this', 'build a shared view'
   ],
   Transformational: [
+    // Pattern-naming and system-level change
     'change the relationship', 'trust between', 'reframe', 'shift the dynamic',
     'be honest about what', 'name what is happening', 'create a new',
     'what we actually need to address', 'reset the', 'at stake here is',
     'different kind of', 'underlying issue', 'what this really needs',
     'name the real issue', 'change what is possible', 'fundamentally different',
-    'what the situation actually requires', 'long-term trust', 'change the pattern'
+    'what the situation actually requires', 'long-term trust', 'change the pattern',
+    // Additional transformational signals
+    'what is actually happening here', 'the conversation we have not been having',
+    'address the real source', 'what this is costing us', 'address this at the right level',
+    'change the relationship dynamic', 'what would actually shift', 'name what is going on',
+    'beneath the surface', 'the trust issue', 'address this systemically',
+    'what the relationship actually needs', 'what would actually change things'
   ]
 };
 
 const NEGATIONS = ['not ', 'never ', "don't ", "doesn't ", "won't ", "wouldn't ", 'cannot ', "can't ", 'without ', 'instead of '];
+
+// Per-scenario behavioral rubric signals — carry 2x weight because they are
+// calibrated to the specific decision context rather than vocabulary alone.
+const SCENARIO_SIGNALS = {
+  1: { // The Number That Won't Move
+    Compliance: ['trust the cfo', 'take the metric offline', 'acknowledge the concern and move forward',
+                 'not worth fighting over', 'do as suggested', 'accept his challenge'],
+    Defensive:  ['defend the methodology', 'stand by our numbers', 'challenge his view directly',
+                 'the methodology is sound', 'push back on the characterisation'],
+    Strategic:  ['take this offline with him', 'one-on-one before the next meeting',
+                 'address his concern separately', 'manage this outside the room', 'speak to him privately'],
+    Avoidance:  ['remove the metric this time', 'soften how i present it', 'present without raising it directly',
+                 'table the methodology discussion', 'avoid the confrontation in the meeting'],
+    Transformational: ['name the dynamic directly', 'address the board relationship',
+                       'what this recurring challenge is costing'],
+  },
+  2: { // Authorised Silence
+    Compliance:      ['not authorised to say', 'continue as normal', 'tell them i cannot discuss it',
+                      'follow the ceo instruction', 'stay with what i have been asked to do'],
+    Avoidance:       ['deflect the question', 'change the subject', 'give a non-answer',
+                      'say there is nothing to share'],
+    Strategic:       ['acknowledge i am aware of their concern without disclosing', 'protect the confidence while being honest',
+                      'tell them what i can', 'manage this carefully', 'protect the trust on both sides'],
+    Collaborative:   ['acknowledge what they have noticed', 'validate their instinct',
+                      'let them know their read is not wrong', 'be as honest as i can within the constraint'],
+    Transformational:['name the constraint honestly', 'be transparent about not being able to be transparent',
+                      'acknowledge the discomfort of the situation'],
+  },
+  3: { // The Quiet Reversal
+    Reactive:        ['confront her in the meeting', 'call out her behaviour', 'address this publicly',
+                      'challenge her steering committee comments'],
+    Dominant:        ['reassert my authority over the programme', 'make clear who leads this',
+                      'speak directly to the sponsor', 'shut down her parallel track'],
+    Strategic:       ['understand her motivation', 'what is driving her position shift',
+                      'manage the sponsor relationship first', 'handle the politics before the meeting',
+                      'address her incentive not just her behaviour'],
+    Collaborative:   ['explore her concerns genuinely', 'hear what she actually needs',
+                      'find a way to address her interest', 'understand what changed for her'],
+    Transformational:['name what is happening between us', 'address the trust issue directly',
+                      'have the real conversation about what has shifted'],
+    Avoidance:       ['let it resolve before the governance review', 'hope it settles before the meeting',
+                      'wait and see what she does next'],
+  },
+  4: { // Unacknowledged Credit
+    Compliance:  ['let it go', 'not worth raising', 'rise above it', 'focus on the next project',
+                  'not my place to claim', 'not worth the political cost'],
+    Avoidance:   ['see if it comes up naturally', 'not raise it externally',
+                  'hope it resolves', 'stay focused on moving forward'],
+    Reactive:    ['confront him directly', 'call this out to leadership', 'escalate what happened',
+                  'demand proper attribution'],
+    Strategic:   ['ensure attribution is clear going forward', 'build the record carefully',
+                  'protect team visibility through the right channel', 'document our contribution'],
+    Transformational:['name what this costs the team trust', 'have the honest conversation with him',
+                      'address what integrity requires here', 'name what actually happened'],
+  },
+  5: { // The COO 11th Hour Request
+    Compliance:      ['of course we will accommodate', 'say yes', 'happy to help', 'cannot say no to the coo',
+                      'find a way to meet their needs', 'agree to the request'],
+    Defensive:       ['explain our constraints', 'defend the original scope',
+                      'the timeline does not allow for this', 'make the case for why we cannot'],
+    Reactive:        ['push back immediately', 'explain this is unreasonable', 'this changes everything',
+                      'express my concern strongly', 'challenge the feasibility firmly'],
+    Strategic:       ['understand what is driving the request', 'explore what is commercially possible',
+                      'find a path that protects the relationship and the scope', 'manage the coo relationship carefully'],
+    Collaborative:   ['understand what they actually need underneath this', 'explore together what is possible',
+                      'hear what is behind the request'],
+    Transformational:['ask what decision this request is serving', 'understand the underlying need',
+                      'reframe around what would actually serve them best'],
+  },
+  6: { // The Escalation Email
+    Compliance:      ['apologise', 'accept their framing', 'agree to their terms',
+                      'say we will do better', 'not challenge their characterisation'],
+    Defensive:       ['defend our work', 'challenge their characterisation', 'provide evidence of what was delivered',
+                      'point to the contract terms', 'rebut their claims about outcomes'],
+    Reactive:        ['respond immediately', 'push back on the framing',
+                      'challenge this escalation directly', 'address this urgently and forcefully'],
+    Strategic:       ['manage the md first', 'understand what the client actually needs',
+                      'control the meeting agenda', 'protect the commercial position carefully'],
+    Collaborative:   ['hear what is behind the escalation', 'understand their real concern',
+                      'genuinely understand what went wrong from their perspective'],
+    Transformational:['address the real issue not the symptoms', 'have the honest conversation about what happened',
+                      'name what actually went wrong'],
+  },
+  7: { // The Team That Won't Survive
+    Compliance:  ['run the planning cycle as directed', 'follow the instructions given',
+                  'do what i have been asked', 'continue as normal as instructed'],
+    Avoidance:   ['say nothing yet', 'wait for more information before saying anything',
+                  'keep running as normal', 'not raise the issue until i have to',
+                  'avoid creating concern before necessary'],
+    Strategic:   ['protect the team', 'manage what information comes out when',
+                  'control the message carefully', 'think through what i say and what i do not'],
+    Collaborative:   ['be as honest as i can within the constraint', 'stay connected to them through this',
+                      'acknowledge what i can acknowledge', 'hear their concerns genuinely'],
+    Transformational:['be honest about the constraint i am under', 'name what i can name',
+                      'honour the trust the team has placed in me'],
+    Dominant:    ['take control of the transition', 'run this my way within the mandate',
+                  'set the direction for how this is managed'],
+  },
+  8: { // The Risk the Board Does Not Want to Hear
+    Compliance:      ['accept the committee decision', 'acknowledge their preference to defer',
+                      'monitor as agreed', 'respect the board decision', 'follow their guidance on timing'],
+    Avoidance:       ['present it cautiously', 'note it for the record', 'not push too hard',
+                      'accept another deferral', 'table the detailed discussion for next time'],
+    Defensive:       ['present the evidence again', 'demonstrate the methodology clearly',
+                      'prove the risk is real', 'show the documentation', 'make the case with data and analysis'],
+    Dominant:        ['insist on a decision', 'make clear i will not accept another deferral',
+                      'demand action today', 'state unequivocally what needs to happen'],
+    Strategic:       ['frame this for the committee carefully', 'position this to get a response',
+                      'manage the politics of the room', 'ensure i am on record having raised it',
+                      'protect my position if this materialises'],
+    Collaborative:   ['understand what is making them reluctant', 'hear their concern about timing',
+                      'find a path they can actually take'],
+    Transformational:['name what is happening in this governance dynamic', 'address the fiduciary obligation directly',
+                      'name the real risk including the risk of not acting', 'what integrity requires here'],
+  },
+  9: { // The Parallel Track
+    Reactive:        ['call her out in the meeting', 'challenge her directly in front of the group',
+                      'address her behaviour publicly now', 'name what she has been doing'],
+    Dominant:        ['reassert my authority over the programme', 'make clear who leads this',
+                      'take control back', 'shut down her track'],
+    Compliance:      ['accept her explanation', 'agree she was filling gaps',
+                      'let it go this time', 'not make it an issue'],
+    Avoidance:       ['address it only outside the meeting', 'let it resolve over time',
+                      'not raise it now', 'see how the next phase goes'],
+    Strategic:       ['manage the sponsor relationship', 'address this with her one-on-one',
+                      'understand her incentive before acting', 'handle the politics carefully before the governance review'],
+    Collaborative:   ['explore what genuine alignment looks like', 'hear what she experienced',
+                      'understand where this broke down', 'build a genuine shared governance structure'],
+    Transformational:['name the governance failure', 'address what the programme actually needs',
+                      'have the honest conversation about what happened and why'],
+  },
+  10: { // The Budget That Broke It
+    Compliance:      ['accept his message', 'different vehicle same goal', 'let it go',
+                      'do not make it a big deal', 'move on and collaborate anyway'],
+    Avoidance:       ['not respond immediately', 'let time pass before responding',
+                      'not raise the issue', 'see how the collaboration goes'],
+    Reactive:        ['challenge him directly', 'escalate to leadership', 'confront what he did',
+                      'make clear this is not acceptable behaviour'],
+    Dominant:        ['make clear there are consequences', 'take control of my team narrative',
+                      'assert my position with leadership'],
+    Strategic:       ['protect my team narrative', 'understand what drove his decision',
+                      'manage how this lands with leadership', 'protect the relationship strategically'],
+    Collaborative:   ['have an honest conversation about what happened', 'understand what he needed',
+                      'find a genuine path forward', 'hear his perspective on why'],
+    Transformational:['name what this costs the relationship', 'address what trust requires',
+                      'what actually needs to happen for this to be real collaboration again'],
+  },
+};
 
 const STATE_INSIGHTS = {
   Avoidance: {
@@ -525,7 +735,7 @@ const STATE_INSIGHTS = {
   }
 };
 
-function scoreResponse(text) {
+function scoreResponse(text, scenarioId) {
   const lower = text.toLowerCase();
   const scores = {};
   for (const [state, markers] of Object.entries(MARKERS)) {
@@ -547,18 +757,32 @@ function scoreResponse(text) {
     }
     scores[state] = count;
   }
+  // Scenario rubric signals — 2x weight (contextually calibrated to the decision)
+  const rubric = scenarioId && SCENARIO_SIGNALS[scenarioId];
+  if (rubric) {
+    for (const [state, signals] of Object.entries(rubric)) {
+      for (const signal of signals) {
+        if (lower.includes(signal)) scores[state] = (scores[state] || 0) + 2;
+      }
+    }
+  }
   return scores;
 }
 
 function aggregateResults(allResponses) {
   const totals = Object.fromEntries(STATE_KEYS.map(k => [k, 0]));
   const scenarioHighScores = {};
+  const domainTotals = Object.fromEntries(Object.keys(DOMAIN_SCENARIOS).map(d => [d, 0]));
 
   for (const scenario of SCENARIOS) {
     const text = allResponses[scenario.id] || '';
-    const s = scoreResponse(text);
+    const s = scoreResponse(text, scenario.id);
     const topState = STATE_KEYS.slice().sort((a, b) => s[b] - s[a])[0];
     scenarioHighScores[scenario.title] = topState;
+    const scenarioTotal = Object.values(s).reduce((a, b) => a + b, 0);
+    for (const [domain, titles] of Object.entries(DOMAIN_SCENARIOS)) {
+      if (titles.includes(scenario.title)) domainTotals[domain] += scenarioTotal;
+    }
     for (const k of STATE_KEYS) totals[k] += s[k];
   }
 
@@ -568,12 +792,20 @@ function aggregateResults(allResponses) {
   );
 
   const sorted = STATE_KEYS.slice().sort((a, b) => state_scores[b] - state_scores[a]);
-  let primary_state = sorted[0];
-  let secondary_state = sorted[1] !== primary_state ? sorted[1] : sorted[2] || sorted[0];
+  const primary_state = sorted[0];
 
   if (state_scores[primary_state] === 0) {
     return { insufficient_data: true };
   }
+
+  // Secondary state only assigned if it reaches 40% of primary raw score
+  const secondaryCandidate = sorted[1] !== primary_state ? sorted[1] : (sorted[2] || null);
+  const secondary_state = secondaryCandidate &&
+    (totals[secondaryCandidate] / Math.max(totals[primary_state], 1)) >= 0.40
+    ? secondaryCandidate : null;
+
+  // Weakest domain — lowest total signal across its two scenarios
+  const weakest_domain = Object.entries(domainTotals).sort(([, a], [, b]) => a - b)[0][0];
 
   const scenariosOfNote = Object.entries(scenarioHighScores)
     .filter(([, state]) => state === primary_state)
@@ -581,10 +813,18 @@ function aggregateResults(allResponses) {
     .slice(0, 2);
 
   const insights = STATE_INSIGHTS[primary_state];
+
+  const comboKey = secondary_state ? `${primary_state}+${secondary_state}` : null;
+  const combo_note = comboKey && COMBO_PROGRAMMES[comboKey] ? COMBO_PROGRAMMES[comboKey] : null;
+  const domain_note = DOMAIN_WEAK_NOTE[weakest_domain] || null;
+
   return {
     primary_state,
     secondary_state,
     state_scores,
+    weakest_domain,
+    combo_note,
+    domain_note,
     pattern_signature: insights.pattern_signature,
     hidden_cost: insights.hidden_cost,
     awareness_moment: insights.awareness_moment,
@@ -637,6 +877,50 @@ const PROGRAMMES = {
     supporting: 'Influence Under Pressure™',
     message: 'Your responses reflect a mature, integrative communication pattern. The work ahead is sustaining this under organisational pressure and embedding it beyond your own practice — into the culture and teams around you. Executive Communication Coaching anchors the pattern at executive scale; Influence Under Pressure™ ensures it holds through the conditions that most reliably erode it.'
   }
+};
+
+// ─── Combination Programme Notes — Primary + Secondary ───────────────────────
+// Only real Eloqaura modules referenced. Only the most diagnostically significant
+// pairings are listed; unmatched pairs fall back to single-state programme.
+const COMBO_PROGRAMMES = {
+  'Strategic+Avoidance':
+    'Your Strategic pattern co-exists with a tendency to withdraw from directness under pressure. Leadership Presence Lab™ — specifically through the track on naming what is uncomfortable — addresses the gap between calculating well and saying the thing that needs to be said.',
+  'Strategic+Defensive':
+    'Your Strategic orientation co-exists with a defensive response when challenged. Decision-Making Dialogues™ and The Listening Lab™ together address the gap between positioning well externally and revising genuinely when the information warrants it.',
+  'Strategic+Compliance':
+    'Your strategic awareness co-exists with a tendency to defer when the most powerful voice is present. Voice of Influence™ — specifically the track on holding a position independently formed — closes this gap.',
+  'Collaborative+Avoidance':
+    'Your collaborative instinct stops short of the difficult decision or naming. Voice of Influence™ — specifically the track on directness within trusting relationships — addresses the gap between genuine openness and the willingness to own a clear direction.',
+  'Collaborative+Compliance':
+    'Your collaborative orientation co-exists with deference to dominant voices in the room. Voice of Influence™ combined with Power–Vulnerability Matrix™ develops the capacity to consult genuinely and hold a position independently.',
+  'Dominant+Reactive':
+    'Your dominant communication combines with reactive escalation under pressure. Power–Vulnerability Matrix™ addresses both — the authority-restraint calibration and the specific regulation layer that prevents force from arriving before thinking.',
+  'Dominant+Defensive':
+    'Your dominant pattern combines with evidence-based defence when challenged. The Listening Lab™ addresses the specific development edge: creating conditions where challenge improves your decisions rather than landing as an authority contest.',
+  'Defensive+Compliance':
+    'Evidence-based defence combined with deference to authority creates a pattern that is technically rigorous but ultimately deferential. The Listening Lab™ and Voice of Influence™ together address both ends of this gap.',
+  'Reactive+Dominant':
+    'Your reactive escalation and dominant direction combine into a pattern that is fast and decisive but can outpace the situation. Power–Vulnerability Matrix™ and Influence Under Pressure™ together address the regulation layer.',
+  'Avoidance+Compliance':
+    'A pattern of avoiding directness combined with deference to authority creates significant invisibility at senior level. Presence Amplifier™ — specifically the track on naming difficult things to those with authority over you — is the primary development focus.',
+  'Transformational+Strategic':
+    'You operate at a high level. The specific development edge is making your reasoning visible rather than arriving with conclusions — building institutional trust rather than reliance on your individual judgment. Executive Communication Coaching, advanced cohort.',
+  'Transformational+Collaborative':
+    'Your transformational pattern is accompanied by a strong collaborative instinct. The development edge is scale: embedding the conditions for transformational thinking beyond your direct relationships. Executive Communication Coaching, institutional track.',
+};
+
+// ─── Domain Weakness Notes ────────────────────────────────────────────────────
+const DOMAIN_WEAK_NOTE = {
+  'Managing Up':
+    'Your weakest signals appeared in Managing Up scenarios — navigating authority relationships and delivering difficult news upward. Programme sessions should weight these contexts specifically.',
+  'Political Coalitions':
+    'Your weakest signals appeared in Political Coalition scenarios — managing peer dynamics, coalition-building, and credit. Programme sessions should weight peer-complexity contexts specifically.',
+  'Client Escalation':
+    'Your weakest signals appeared in Client Escalation scenarios — holding commercial and relational boundaries under external pressure simultaneously.',
+  'Strategic Bad News':
+    'Your weakest signals appeared in Strategic Bad News scenarios — communicating difficult information with clarity to teams and boards while preserving trust.',
+  'Cross-Functional Conflict':
+    'Your weakest signals appeared in Cross-Functional Conflict scenarios — navigating interdependency, competing mandates, and shared accountability without formal authority.',
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -1585,12 +1869,32 @@ function ResultsScreen({ analysis, onReset }) {
                   with <em>{prog.supporting}</em>
                 </p>
               )}
-              <p style={{ fontSize: '0.875rem', lineHeight: 1.85, color: 'var(--mid)', textAlign: 'center', maxWidth: '480px', margin: '0 auto 2.5rem' }}>
+              <p style={{ fontSize: '0.875rem', lineHeight: 1.85, color: 'var(--mid)', textAlign: 'center', maxWidth: '480px', margin: '0 auto 2rem' }}>
                 {prog.message}
               </p>
+              {analysis.combo_note && (
+                <div style={{ maxWidth: '480px', margin: '0 auto 2rem', padding: '1rem 1.25rem', background: 'rgba(0,229,196,0.04)', border: '1px solid rgba(0,229,196,0.15)', borderRadius: '2px' }}>
+                  <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--teal-dim)', marginBottom: '0.5rem' }}>
+                    Primary + Secondary pattern
+                  </p>
+                  <p style={{ fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--mid)' }}>
+                    {analysis.combo_note}
+                  </p>
+                </div>
+              )}
+              {analysis.domain_note && (
+                <div style={{ maxWidth: '480px', margin: '0 auto 2.5rem', padding: '1rem 1.25rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '2px' }}>
+                  <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--mid)', marginBottom: '0.5rem' }}>
+                    Domain focus
+                  </p>
+                  <p style={{ fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--mid)' }}>
+                    {analysis.domain_note}
+                  </p>
+                </div>
+              )}
               <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                 <a
-                  href={`mailto:hello@eloqaura.com?subject=E8 Senior Diagnostic — ${analysis.primary_state} — Programme Enquiry&body=I have completed the E8 Senior Leadership Diagnostic.%0A%0APrimary state: ${analysis.primary_state}%0ASecondary state: ${analysis.secondary_state}%0A%0AI would like to enquire about ${prog.primary}.`}
+                  href={`mailto:hello@eloqaura.com?subject=E8 Senior Diagnostic — ${analysis.primary_state} — Programme Enquiry&body=I have completed the E8 Senior Leadership Diagnostic.%0A%0APrimary state: ${analysis.primary_state}%0ASecondary state: ${analysis.secondary_state || 'None detected'}%0A%0AI would like to enquire about ${prog.primary}.`}
                   className="btn-primary"
                   style={{ textDecoration: 'none', display: 'inline-block' }}
                 >
