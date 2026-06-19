@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E8 Decision Awareness Diagnostic — Senior Leadership Edition</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #050E1A;
+  --bg-lift:   #081620;
+  --surface:   #091525;
+  --surface2:  #0F2138;
+  --border:    rgba(0,229,196,0.12);
+  --teal:      #00E5C4;
+  --teal-dim:  #008F7A;
+  --teal-pale: rgba(0,229,196,0.07);
+  --coral:     #FF6B4A;
+  --coral-dim: #9A3828;
+  --blue:      #329DF6;
+  --purple:    #A78FCE;
+  --white:     #E5F5F2;
+  --mid:       #9CC8D8;
+  --muted:     #253D52;
+  --serif:     'Cormorant Garamond', Georgia, serif;
+  --sans:      'DM Sans', system-ui, sans-serif;
+  --mono:      'DM Mono', monospace;
+  --glass-bg:  rgba(9, 21, 37, 0.65);
+  --glass-border: rgba(0, 229, 196, 0.10);
+}
+
+html, body { height: 100%; background: radial-gradient(ellipse at 50% 35%, #0A1A2E 0%, #050E1A 55%, #030A14 100%); color: var(--white); font-family: var(--sans); }
+#root { min-height: 100%; }
+
+textarea {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  background: rgba(0,229,196,0.025);
+  border: 1px solid var(--border);
+  color: var(--white);
+  resize: none;
+  transition: border-color 0.3s, background 0.3s;
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1px;
+  min-height: 200px;
+}
+textarea::placeholder { color: var(--muted); font-style: italic; }
+textarea:focus { outline: none; border-color: rgba(0,229,196,0.4); background: rgba(0,229,196,0.04); }
+
+input[type="password"] {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  background: rgba(0,229,196,0.02);
+  border: 1px solid var(--border);
+  color: var(--white);
+  padding: 0.75rem 1rem;
+  border-radius: 1px;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+input[type="password"]:focus { outline: none; border-color: rgba(0,229,196,0.35); }
+input[type="password"]::placeholder { color: var(--muted); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.06); }
+}
+@keyframes pulseRing {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 0.15; }
+}
+@keyframes barGrow {
+  from { width: 0; }
+}
+@keyframes drawLine {
+  from { stroke-dashoffset: 2000; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes nodeLit {
+  from { opacity: 0; transform: scale(0.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes gentleDrift {
+  0%, 100% { transform: translate(0,0); }
+  50%       { transform: translate(1px,-2px); }
+}
+
+.fade-up  { animation: fadeUp 0.6s ease both; }
+.fade-in  { animation: fadeIn 0.4s ease both; }
+.pulsing  { animation: pulse 2.4s ease-in-out infinite; }
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.875rem 2.75rem;
+  border: 1px solid rgba(0,229,196,0.35);
+  color: var(--teal);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  font-family: var(--sans);
+}
+.btn-primary:hover { background: rgba(0,229,196,0.12); border-color: var(--teal); }
+.btn-primary:disabled { border-color: var(--muted); color: var(--muted); cursor: not-allowed; }
+
+.btn-ghost {
+  display: inline-block;
+  padding: 0.625rem 2rem;
+  border: 1px solid var(--muted);
+  color: var(--mid);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.2s, color 0.2s;
+  font-family: var(--sans);
+}
+.btn-ghost:hover { border-color: var(--mid); color: var(--white); }
+
+.divider-teal {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(0,229,196,0.3), transparent);
+}
+
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+  mix-blend-mode: overlay;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--teal-dim); border-radius: 2px; }
+
+.domain-tag {
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.bar-track {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  animation: barGrow 1.4s ease both;
+  box-shadow: 0 0 10px rgba(0,229,196,0.18);
+}
+
+.expand-panel {
+  border: 1px solid rgba(255,255,255,0.10);
+  margin-bottom: 0.5rem;
+  background: rgba(255,255,255,0.012);
+  transition: border-color 0.3s;
+}
+.expand-panel:hover { border-color: rgba(0,229,196,0.16); }
+.expand-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+.expand-body {
+  padding: 0 1.25rem 1.5rem 3.5rem;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+#root:empty::before {
+  content: '';
+  display: block;
+  height: 100vh;
+  background: radial-gradient(ellipse at 50% 35%, #0A1A2E 0%, #050E1A 55%, #030A14 100%);
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.text-glow {
+  text-shadow: 0 0 14px rgba(0,229,196,0.45), 0 0 4px rgba(0,229,196,0.2);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes rippleExpand {
+  0% { r: 4; opacity: 0.6; }
+  100% { r: 55; opacity: 0; }
+}
+
+@keyframes dashFlow {
+  to { stroke-dashoffset: -400; }
+}
+
+@keyframes floatParticle {
+  0%, 100% { opacity: 0; }
+  30% { opacity: 0.6; }
+  60% { opacity: 0.15; }
+}
+
+@keyframes orbitalSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.score-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.625rem;
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+  border-radius: 2px;
+  background: rgba(0,229,196,0.08);
+  border: 1px solid rgba(0,229,196,0.18);
+  color: var(--teal);
+}
+
+.domain-card {
+  padding: 0.875rem 1rem;
+  background: rgba(255,255,255,0.015);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-left-width: 2px;
+  transition: border-color 0.3s, background 0.3s;
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+// ─── E8 State Registry — Senior Calibration ───────────────────────────────────
+const E8 = {
+  Avoidance: {
+    color: '#5B7A9A', glow: '#3A5570', symbol: '○', group: 'Survival', angle: 315,
+    senior: 'At senior level, Avoidance presents as prudent delay — continuous monitoring, consensus-building that never closes, or over-delegation framed as empowerment. The sophistication is real; so is the protection.',
+  },
+  Compliance: {
+    color: '#8B6EB8', glow: '#5E4A8A', symbol: '◇', group: 'Survival', angle: 270,
+    senior: 'At senior level, Compliance presents as political acuity — reading power signals, aligning upward, following unspoken rules. The surface behaviour is socially legitimate; the driver is protective rather than purposeful.',
+  },
+  Defensive: {
+    color: '#FF8A35', glow: '#AA5500', symbol: '△', group: 'Protective', angle: 225,
+    senior: 'At senior level, Defensive presents as evidence-based rigour — data, process, validation, due diligence. The function is identity or status protection; the form is professional and difficult to challenge.',
+  },
+  Reactive: {
+    color: '#FF5535', glow: '#AA2800', symbol: '⊟', group: 'Protective', angle: 180,
+    senior: 'At senior level, Reactive presents as decisive urgency or principled conviction. Emotional charge is often indistinguishable from genuine leadership until it creates collateral damage that compounds quietly.',
+  },
+  Dominant: {
+    color: '#FF3333', glow: '#8A0000', symbol: '▲', group: 'Protective', angle: 135,
+    senior: 'At senior level, Dominant presents as visionary clarity — direction-setting, simplification, decisiveness. Control over the conversation is the mechanism; certainty is the story told about it.',
+  },
+  Strategic: {
+    color: '#1E90FF', glow: '#0050AA', symbol: '◈', group: 'Elevated', angle: 90,
+    senior: 'The baseline expectation at this career stage. Chosen response based on outcome mapping, audience awareness, and consequence sequencing. The diagnostic question: is this calculation or wisdom?',
+  },
+  Collaborative: {
+    color: '#00C4A8', glow: '#006A5A', symbol: '⬡', group: 'Elevated', angle: 45,
+    senior: 'At senior level, Collaborative requires genuine vulnerability with people who have real power over you — not just openness with those below. When authentically present, it is a high signal. It is also rare.',
+  },
+  Transformational: {
+    color: '#00E5C4', glow: '#007A68', symbol: '✦', group: 'Elevated', angle: 0,
+    senior: 'Changes what the conversation means — the trust between parties, the future decision pattern of the room, or the culture of how this issue is handled going forward. A leadership signature, not a technique.',
+  }
+};
+
+const STATE_KEYS = Object.keys(E8);
+
+// ─── Deep Content — Senior Level Calibration ─────────────────────────────────
+const DEEP = {
+  Avoidance: {
+    pattern: `At this career stage, avoidance has become architecturally sophisticated. You have learned to call it prudence. "We need more data." "Let me consult across the organisation." "Now isn't the right time for this." The vocabulary of leadership has given your protection a professional disguise.\n\nYou are not stepping back from simple decisions — those you make well. What you are stepping back from are the decisions that require you to name something uncomfortable: the colleague whose behaviour is degrading team culture, the executive sponsor whose assumptions are flawed, the strategic direction that is quietly off-course. The higher the stakes and the more visible the consequences, the more persuasively your avoidance constructs reasons to wait.`,
+    costs: `At the 5 to 15 year mark, the cost of avoidance is no longer personal — it is organisational. The team issue you did not name compounds into a structural problem. The difficult peer conversation you deferred becomes a political positioning that takes four months to resolve.\n\nMore significantly: you are being watched at this level in ways you may not fully register. Senior leaders and board members form views not just on what you say but on what you don't say and when you don't say it. Avoidance reads, from above, as insufficient conviction in your own perspective. The cost is not a single decision — it is the accumulated impression that you will not hold your ground when it matters.`,
+    awareness: `The Awareness Point is the moment you feel the weight of naming something and reach, instead, for a process to defer it. That reaching is fast. It often disguises itself as thoroughness.\n\nAt senior level, the avoidance mechanism has three variations. The first is deferral by process ("let's take this to the committee"). The second is delegation by empowerment ("I trust the team to work through this"). The third is avoidance by complexity ("this needs more context before we can address it").\n\nEach of these has a legitimate version. The diagnostic question is: are you using the process, the team, or the complexity as cover for a conversation you should be having directly?`,
+    elevated: `What shifts when this becomes conscious at senior level is not confrontation — it is presence. You stop engineering reasons to delay and start building the habit of naming things clearly and early, before they require a larger intervention.\n\nThe senior leaders who are most trusted are often described as people who "say the thing in the room." Not aggressively. Not constantly. But reliably — when something needs to be said. That reliability is not personality. It is a practised choice: to speak when the cost of silence is higher than the cost of the conversation. Your authority at this stage does not come from your title. It comes from your reputation for engagement.`
+  },
+  Compliance: {
+    pattern: `At senior level, compliance is rarely visible as compliance. You have learned to frame it as stakeholder alignment, cultural sensitivity, or political intelligence. You read the power signals in the room with considerable skill. When the CEO expresses a view, you find ways to support it. When the dominant voice in the executive committee sets a direction, you sequence your own view to align rather than challenge.\n\nThis looks like wisdom. It is sometimes wisdom. The diagnostic question is: when you align, is it because you have genuinely evaluated the case and found it sound — or because you have calculated that alignment is safer than challenge? The answer determines whether this is Strategic or Compliance.`,
+    costs: `The senior career cost of compliance is a particular kind of invisibility. You become reliable. You become trustworthy in delivery. You become someone who "plays well across the organisation." These are not small things. But they are also the description of a career that plateaus without the person understanding why.\n\nThe rooms where strategic direction is set, where the harder decisions are made, where the organisation's course is genuinely shaped — these rooms require someone with a perspective that is independently arrived at and held under pressure. The compliant senior manager, however skilled, does not get invited into those rooms because nothing unexpected happens when they are there.`,
+    awareness: `The Awareness Point is the moment you hear a view from authority and begin the unconscious calculation of how to position your response in alignment with it.\n\nFor senior managers in this pattern, the calculation is fast and largely invisible — it happens before you have fully formed your own view. The internal signal is not always discomfort; often, it is the absence of discomfort. The ease with which you locate your position relative to power is itself the diagnostic indicator.\n\nThe practice is simple but requiring: before you respond to any significant input from a senior stakeholder, write your own view first. Not after. The order of operations matters.`,
+    elevated: `What shifts when this becomes conscious is not that you become a contrarian. You become a genuine participant in the decisions that shape the organisation.\n\nLeaders who are trusted with the highest-stakes conversations are not those who agree most reliably — they are those who can be counted on to surface the perspective others are not surfacing. That function is not aggressive. It requires only that you arrive at your own view independently and offer it with the same directness with which you currently offer alignment.\n\nYour compliance has been a sophisticated social skill. The shift is not to abandon the skill — it is to apply it in service of your own judgment rather than in service of the room's current momentum.`
+  },
+  Defensive: {
+    pattern: `At this career stage, defensive behaviour has become technically sophisticated. You deploy data where a first-time manager would have deployed justification. You invoke process where a younger leader would have invoked intention. You commission additional analysis when what you actually need is to sit with an uncomfortable truth about a decision you made.\n\nThe professional shell is convincing. The colleagues who challenge your position often leave the conversation believing they were mistaken rather than outmanoeuvred. The board member who raised a concern finds their concern addressed on the surface and not engaged at its core. You are very good at this. That is part of what makes it expensive.`,
+    costs: `The cost at senior level is information quality. The people around you — peers, direct reports, board members — are constantly making micro-decisions about what to bring you and how to frame it. Over time, if they learn that bringing you uncomfortable information produces technical rebuttal rather than genuine engagement, they adjust. The information that reaches you becomes pre-sorted for palatability.\n\nBy the time you are making the major strategic and operational decisions of a senior leader, you are operating on edited information. The edits are not malicious. They are protective — of the relationship, of the conversation. But the decisions you make on edited information are less sound than you believe them to be.`,
+    awareness: `The Awareness Point is the moment you receive information that complicates your existing position and feel the impulse to engage with it on your terms rather than on its own.\n\nAt senior level, this impulse is well-dressed. It often arrives not as defensiveness but as rigour: the desire to understand the methodology, to examine the evidence, to contextualise the finding. These are legitimate inquiries. The diagnostic question is whether they are being deployed to understand or to deflect.\n\nA useful test: when did you last revise a major position based on new information — and do so publicly, clearly, and without having the revision appear as a strategic repositioning?`,
+    elevated: `What shifts is the quality of information you receive and the quality of decisions you make with it.\n\nSenior leaders who are genuinely non-defensive — who can receive challenge, sit with discomfort, and revise visibly — are trusted with the organisation's real problems. Not the problems that have been prepared for them, but the problems that exist before they have been managed. That access is a form of organisational power that no defensive manager can reach.\n\nThe shift is not to become agreeable. It is to become safe — in the specific sense that people know bringing you the truth will produce engagement rather than rebuttal. That safety is the precondition for leading anything genuinely complex.`
+  },
+  Reactive: {
+    pattern: `At senior level, reactive behaviour is rarely visible as loss of control. It has been refined. The intensity is channelled: into the decision made too quickly under pressure, the email sent before the thinking was complete, the public position taken in a steering meeting that closes off options the organisation needed to keep open.\n\nYour reactivity has a particular signature: it activates most visibly in the scenarios where you have strong conviction. The stronger the conviction, the faster the response — and the faster the response, the more likely it is driven by feeling rather than consequence. At senior level, those fast responses create structural effects: they signal direction, they foreclose alternatives, they set a tone that others spend weeks working within.`,
+    costs: `The cost at senior level is collateral and compounding. A reactive response in a board meeting does not just produce a bad moment — it produces a month of recovery, of walking things back, of managing perceptions.\n\nMore significantly: reactive leaders at senior level train their organisations to manage their moods rather than address the problems the moods are pointing at. The operational issue gets handled — the response to the issue gets managed around you. Information is pre-filtered for its capacity to produce a measured rather than charged reaction. By the time something reaches you, the urgency has been processed out of it. This is protective of you and catastrophic for the organisation's response time.`,
+    awareness: `The Awareness Point at senior level is harder to locate than at earlier career stages, because the reactive response has become faster, more practised, and more disguised as decisiveness.\n\nThe signal is not always emotional charge. Sometimes it is the clarity that arrives too quickly — the moment a complex situation resolves into a single obvious course of action. Real complexity does not resolve this way. When it appears to, ask: is this clarity the product of thinking, or of feeling?\n\nThe practice is structural: any major decision or position made in response to a significant provocation should have a minimum period of reflection before it is communicated. Not because speed is wrong. Because the thinking that follows the initial response almost always improves it.`,
+    elevated: `What shifts is not the speed of your response — it is the quality. The same intelligence and conviction that currently produces reactive positions, when given the space of a deliberate pause, produces decisive clarity that is also sound.\n\nSenior leaders who are known for decisive calm — who can hold pressure without releasing it prematurely — are the leaders others bring the hardest problems to. They are trusted with problems that need thinking, not just problems that need action. The reactive senior leader is trusted with action but excluded from the thinking that defines what should be acted upon.\n\nYour intensity is an asset. The pause before the response is what makes it strategic rather than costly.`
+  },
+  Dominant: {
+    pattern: `At this career stage, dominance has become architectural. You may no longer override decisions visibly. The mechanism has become structural: you control through agenda design, through the sequencing of who speaks when, through the private conversations that frame direction before the room convenes, through the certainty with which you present your position that makes alternative positions feel disloyal rather than complementary.\n\nYour team and peers experience this as vision. You experience it as leadership. The diagnostic question is whether the clarity you create is the clarity of genuine analysis or the clarity of a mind that has stopped being genuinely curious about what it does not yet know.`,
+    costs: `At senior level, the dominant leader faces a specific career ceiling that is rarely articulated directly. You are trusted with delivery. You are given roles that require conviction and direction-setting. You are not given the roles that require building people who surpass you, creating cultures that survive your absence, or navigating environments where the right answer is genuinely uncertain.\n\nThe organisation's highest-stakes work — the transformation mandates, the post-merger integration, the strategic pivots requiring broad organisational ownership — goes to leaders whose teams independently choose to follow them. Dominant leaders command compliance. That compliance looks like followership until the moment you are absent, and then it reveals itself as obedience without conviction.`,
+    awareness: `The Awareness Point is the moment you feel genuine uncertainty and reach for the certainty of your existing position rather than sitting in the uncertainty long enough to let the room think.\n\nAt senior level, this is visible in a specific way: you tend to resolve complex conversations early. You summarise before the conversation is complete. You identify the path forward — in the board presentation, the executive review, the stakeholder negotiation — before the full complexity has been made visible.\n\nThe practice: in the next significant decision meeting you chair, do not speak first. Do not speak second. Note what the room produces before your position has shaped it.`,
+    elevated: `What shifts is your multiplier effect. The dominant senior leader produces results roughly proportional to their own intelligence and conviction. The leader who has released control without losing conviction produces results proportional to the intelligence and conviction of every person in their organisation.\n\nThe specific shift is the discovery that your authority does not diminish when others think well. It compounds. The organisation that produces good ideas independently of you does not make you less relevant — it makes your role specifically valuable at the decisions where your perspective genuinely matters, rather than distributed across all decisions, which dilutes it. This is not a technique. It is a change in what you believe about where leadership actually lives.`
+  },
+  Strategic: {
+    pattern: `At this career stage, strategic behaviour is the expected baseline — and the diagnostic question shifts accordingly. The issue is not whether you are Strategic; you are. The question is whether your strategy is primarily calculation or primarily wisdom. Calculation means you are optimising for outcome, reputation, and consequence as you experience them. Wisdom means you are making the same choices in service of the organisation's long-term interest, even when that interest differs from your shorter-term positioning.\n\nThe gap between the two is rarely visible from the outside. Both look like good leadership. Both produce short-term results. The distinction becomes legible over time — in the decisions you made when calculation and genuine interest diverged, and which way you moved.`,
+    costs: `The specific cost of Strategic-as-calculation at senior level is trust — the deepest organisational trust, not the social or professional trust earned through competence. The people who work most closely with a calculating strategist often admire them and do not fully trust them. They cannot locate the decision they can rely on you to make without modelling your incentives first.\n\nThis erodes the specific kind of followership that senior leadership requires at its most demanding moments: the willingness to move under genuine uncertainty, with incomplete information, because they trust you have decided for reasons that include them. Calculating strategists do not generate that trust, because the calculation is fundamentally about the strategist rather than the system.`,
+    awareness: `The Awareness Point for the Strategic senior manager is the moment where self-interest and institutional interest diverge — and you make the choice that serves the former while constructing a rationale for the latter.\n\nThis is hard to catch because it happens at the level of framing. You are not aware of choosing self-interest; you are aware of choosing what seems like the right outcome. The discipline is a regular honest inventory: in the major decisions of the past quarter, what would you have done differently if your own position were not a variable? If there are things you would have done differently, those are worth examining closely.`,
+    elevated: `What distinguishes the Strategic senior leader who reaches Transformational influence is not increased intelligence — it is increased transparency about their own reasoning. The leader who can show their working — making visible not just their conclusion but the trade-offs they considered and the values that resolved them — earns a form of trust that pure strategic competence alone cannot produce.\n\nTransformational influence at senior level is not about being inspiring. It is about being legible in the right ways: your decisions can be anticipated, not because you are predictable, but because your values are consistent. That consistency, visible under pressure, is what builds organisational cultures rather than merely high-performing teams.`
+  },
+  Collaborative: {
+    pattern: `At this career stage, collaboration is a genuine and often sophisticated competency. The diagnostic pressure point is different from earlier career stages: not whether you collaborate, but with whom, and under what conditions.\n\nSenior-level Collaborative in its highest form requires you to be genuinely open — not just with your direct reports, where there is no real risk — but with people who have real power over you: your CEO, your board, your most influential peers. The willingness to show your thinking incomplete, to invite genuine challenge before your position is formed, to change your mind visibly in front of those who judge you — that is where the pattern is actually tested.`,
+    costs: `The specific risk at senior level is a form of collaborative avoidance: using the process of consultation as a mechanism for not being the one who decides. The senior collaborative manager can create the impression of genuine shared ownership while actually distributing responsibility for outcomes across the group. When things go well, the group receives credit. When things go poorly, the group shares accountability. The manager's individual judgment — and the individual accountability that comes with it — is systematically avoided.\n\nThis reads, over time, as indecision. Not dramatically. The decisions get made. But they are made in a way that means no single person has really made them — and in the senior leader's most important moments, that diffusion of ownership is a leadership failure.`,
+    awareness: `The Awareness Point is the moment you have heard enough to form a view — and you continue consulting, not because the additional input will improve the decision, but because forming a view means owning the direction.\n\nAt senior level, this moment is often invisible because the consultation is genuinely valuable. The practice is to identify, in your own decision-making process, the point at which you shifted from gathering information to deferring the decision through gathering. That point is the Awareness Point — the moment to stop, form your view, and lead from it.\n\nVulnerability at senior level means risking being wrong, in front of people with authority over you, based on your own judgment. That is the specific form collaborative leadership takes at this career stage.`,
+    elevated: `What shifts is the quality of the decisions your consultation produces. The senior leader who consults genuinely — not to diffuse responsibility but to improve their thinking — and then decides clearly and accountably creates a specific experience for the people around them: they feel genuinely heard and they experience real leadership.\n\nThis combination — authentic consultation followed by clear direction — is the rarest form of senior leadership. It requires both the humility to genuinely revise your view based on what others contribute and the courage to make the call when enough has been heard. Neither alone is sufficient. Both together define the Collaborative senior leader at their best.`
+  },
+  Transformational: {
+    pattern: `At this career stage, transformational behaviour is not a peak achievement — it is an operating mode that has specific and demanding requirements. You are not transformational because you can inspire people or reframe situations; those capabilities are necessary but insufficient. Transformational at senior level means that the decisions, conversations, and culture you create continue to shape outcomes and behaviours after you are no longer directly managing them.\n\nThe diagnostic question is not whether you have transformational moments — most senior leaders at this experience level do. The question is whether those moments are exceptions to your pattern or expressions of it. Are you transformational because you occasionally rise to it, or because the conditions you create make it possible for others to rise to it even in your absence?`,
+    costs: `The risks at senior level for the genuinely transformational leader are less about capability and more about sustainability and scalability. The first risk is inconsistency under conditions of sustained pressure — the difference between transformational behaviour on good days and transformational behaviour during the quarters where the organisation is genuinely stressed. Under those conditions, the pattern defaults. Usually to Strategic, sometimes to Dominant. Either represents a withdrawal that the organisation notices and adjusts to accordingly.\n\nThe second risk is scale. Your direct influence is strong. The question is whether the culture you are building through your direct influence is self-sustaining — or whether it requires your continued presence to function.`,
+    awareness: `The Awareness Point at this level is no longer primarily about your own reactions — it is about the reactions of the system you lead. The discipline is to observe, with genuine curiosity rather than confirmation bias, whether the cultural patterns you are creating are actually what you intend.\n\nThe three questions that sustain transformational leadership at senior level: What decisions is the team making well when I am not in the room? What conversations are happening — or not happening — that I do not know about? What does the room become when I enter it, and is that what I want it to become?\n\nThe answers require feedback systems and relationships that are genuinely honest — which means the people who give you feedback must trust that honesty has no social cost.`,
+    elevated: `The next horizon for the transformational senior leader is not a higher state — it is a larger system. The capability you have built within your direct sphere of influence needs to become an institutional capability: embedded in how decisions are made, how conflicts are surfaced and resolved, how leadership is developed across the organisation.\n\nThis requires a specific kind of restraint. The transformational senior leader who begins to institutionalise their approach must be willing to let others do it imperfectly, because imperfect institutional ownership outperforms perfect individual performance at every level of scale. The signature work of this stage is not being transformational — it is making transformational behaviour structurally possible for people who have never directly worked with you.`
+  }
+};
+
+// ─── Scenarios ────────────────────────────────────────────────────────────────
+const SCENARIOS = [
+  { id: 1, domain: 'Managing Up', title: 'The Number That Won\'t Move', prompt: 'You have presented the same operational metric to the board for five consecutive quarters. A board member with disproportionate influence has repeatedly challenged the methodology, suggesting the numbers are overstated. Your methodology is defensible and has been independently validated. Tomorrow\'s board meeting will include this metric again. Your CFO has advised you privately: "Don\'t fight him on it — acknowledge his concern and move the agenda forward." What do you do in the meeting?' },
+  { id: 2, domain: 'Managing Up', title: 'Authorised Silence', prompt: 'Your CEO has shared, in strict confidence, that a significant restructuring is imminent — one that will affect your team and two peer departments. You have been asked to continue running your planning cycle as normal to avoid premature signals. Three of your senior direct reports have noticed the inconsistencies. One has asked you directly: "Is there something happening that we should know about?" You are not yet authorised to disclose. How do you respond?' },
+  { id: 3, domain: 'Political Coalitions', title: 'The Quiet Reversal', prompt: 'A peer director who publicly endorsed a cross-functional initiative you are leading has begun quietly raising concerns in steering committee meetings. The concerns are technically minor but are visibly shifting sentiment among decision-makers. Your programme sponsor has told you privately: "She is positioning for next year\'s budget — handle it before the next governance review." You have a one-on-one scheduled with her next week. What is your approach?' },
+  { id: 4, domain: 'Political Coalitions', title: 'Unacknowledged Credit', prompt: 'Your team delivered a high-visibility project that influenced a company-wide policy change. At the senior leadership offsite, a peer who was a minor stakeholder presented the outcomes and received the recognition — without attribution to your team. Your team noticed. Two direct reports have come to you asking why their contributions were invisible. How do you navigate this — internally, and if at all, externally?' },
+  { id: 5, domain: 'Client Escalation', title: 'The COO\'s 11th Hour Request', prompt: 'You are three weeks from delivering a major consulting engagement. The client\'s COO — not your primary contact — calls you personally: "We have realised we need the analysis to cover an additional market segment. We would like it in the final report. This is important to us." Adding this scope would require two additional weeks and a revised commercial agreement. Your engagement manager is watching how you respond. What do you say to the COO?' },
+  { id: 6, domain: 'Client Escalation', title: 'The Escalation Email', prompt: 'A long-standing client sponsor sends an escalation email to your Managing Director and CC\'s you: "We are not seeing the promised outcomes. I want a meeting this week to discuss whether this engagement continues." Your MD has forwarded it with one line: "Manage this." The client\'s outcome expectations were, in your view, unrealistic — but the contract did not specify timelines clearly. What is your first move?' },
+  { id: 7, domain: 'Strategic Bad News', title: 'The Team That Won\'t Survive', prompt: 'Following an acquisition, you have been told that your unit — eighteen people you have led and developed over four years — will be absorbed into the acquiring company\'s equivalent function, with significant redundancies expected. You are asked to lead the team through a 90-day transition before the final structure is announced. Your team is already asking questions. What do you say — and what do you not say?' },
+  { id: 8, domain: 'Strategic Bad News', title: 'The Risk the Board Does Not Want to Hear', prompt: 'You have been tracking a structural operational risk for eight months — one that, if unaddressed, creates a material compliance exposure within twelve months. You have raised it twice internally; both times the response was "let\'s continue to monitor." You are presenting to the board\'s audit committee next week. How do you bring it up — and how do you handle it if they move to defer again?' },
+  { id: 9, domain: 'Cross-Functional Conflict', title: 'The Parallel Track', prompt: 'You are co-leading a transformation programme with a peer director from operations. Six weeks in, it becomes clear she has been briefing stakeholders independently, shifting agreed timelines, and creating confusion on the ground. When you raise it in your shared programme meeting, she says: "I am just filling gaps — I thought we were aligned." Her sponsor sits on the executive committee. How do you respond in the meeting, and what do you do next?' },
+  { id: 10, domain: 'Cross-Functional Conflict', title: 'The Budget That Broke It', prompt: 'The annual planning cycle concludes. A peer from product — someone you have collaborated well with for two years — has secured budget that your team had been counting on for a shared initiative. You discover he made the case independently, without the joint proposal you had both agreed to submit. Your team is disappointed and watching how you respond. He sends you a brief message: "Hope we can still collaborate — different vehicle, same goal." What do you do?' }
+];
+
+// ─── Domain Mapping ───────────────────────────────────────────────────────────
+const DOMAIN_SCENARIOS = {
+  'Managing Up':              ['The Number That Won\'t Move', 'Authorised Silence'],
+  'Political Coalitions':     ['The Quiet Reversal', 'Unacknowledged Credit'],
+  'Client Escalation':        ['The COO\'s 11th Hour Request', 'The Escalation Email'],
+  'Strategic Bad News':       ['The Team That Won\'t Survive', 'The Risk the Board Does Not Want to Hear'],
+  'Cross-Functional Conflict':['The Parallel Track', 'The Budget That Broke It'],
+};
+
+const DOMAIN_COLOR = {
+  'Managing Up':              '#1E90FF',
+  'Political Coalitions':     '#8B6EB8',
+  'Client Escalation':        '#FF6B4A',
+  'Strategic Bad News':       '#FF8A35',
+  'Cross-Functional Conflict':'#00C4A8',
+};
+
+// ─── Client-Side Scoring Engine ───────────────────────────────────────────────
+const MARKERS = {
+  Avoidance: [
+    // Explicit deferral
+    'more data', 'continue to monitor', 'watch how it', 'gather more information',
+    'wait and see', 'not the right time', 'need more context', 'step back and observe',
+    'revisit this', 'give it time', 'let it play out', 'defer to their',
+    'hold off', 'pending further', 'not yet the moment', 'too early to',
+    'monitor the situation', 'take more time', 'not enough information',
+    // Polished avoidance — sounds prudent, still deferral
+    'let this settle', 'pick my battles', 'stay focused on the next',
+    'not worth escalating', 'avoid premature', 'let the process run',
+    'give this space', 'nothing actionable yet', 'better to wait',
+    'let this run its course', 'allow time for this', 'continue as planned',
+    'see how this develops', 'no need to escalate', 'not constructive to raise',
+    // Collaborative-avoidance — defers to group instead of deciding
+    'let the group decide', 'leave it to the team', 'what the group thinks is best',
+    'consensus will guide', 'defer to the consensus', 'see what the team decides',
+    'let them decide', 'not my place to push this'
+  ],
+  Compliance: [
+    // Explicit deference
+    'follow their lead', 'as directed', 'what they need to hear', 'align with their',
+    'respect the hierarchy', 'above my level', 'not my place', 'follow protocol',
+    'whatever they decide', 'acknowledge their concern', 'support their decision',
+    'stay in my lane', 'what was agreed', 'not appropriate for me', 'defer to the',
+    'honour the process', 'follow the instruction', 'accept their direction',
+    // Polished compliance — sounds professional, still deference
+    'support the direction', 'align with leadership', 'not for me to override',
+    'trust the process', 'in line with what', 'consistent with senior',
+    'above my authority', 'follow the mandate', 'behind the decision',
+    'cannot go against', 'the decision has been made', 'respect the seniority',
+    'not my call to', 'what leadership wants', 'in line with the guidance',
+    'not within my remit', 'as the ceo asked', 'as instructed by'
+  ],
+  Defensive: [
+    // Evidence-as-shield
+    'our data shows', 'the evidence shows', 'our methodology', 'i can demonstrate',
+    'for the record', 'the facts show', 'independently validated', 'our process was',
+    'our track record', 'i want to be clear', 'as i have said', 'clearly shows',
+    'our analysis confirms', 'justify', 'correct the record', 'i need to establish',
+    'protect our position', 'the numbers speak', 'rebut', 'counter the claim',
+    // Additional defensive patterns
+    'stand by my', 'i dispute', 'factually wrong', 'the record clearly',
+    'want to be on record', 'this misrepresents', 'documented process',
+    'as per the agreed', 'challenge that assertion', 'i would dispute',
+    'let me be absolutely clear', 'i have evidence', 'the documentation shows',
+    'per the methodology', 'our position is correct', 'this is incorrect'
+  ],
+  Reactive: [
+    // Immediate escalation
+    'unacceptable', 'cannot allow', 'will not tolerate', 'need to address this now',
+    'escalate immediately', 'push back hard', 'respond directly and firmly',
+    'cannot let this', 'strong objection', 'make it clear that this',
+    'demand an explanation', 'outraged', 'completely wrong', 'act immediately',
+    'send a firm message', 'i am frustrated', 'this must stop', 'challenge them directly',
+    // Additional reactive patterns
+    'this cannot stand', 'deeply concerned and will', 'not going to accept this',
+    'confront this directly', 'immediate consequences', 'will not let this slide',
+    'want this escalated today', 'strong response is needed', 'call this out publicly',
+    'this crosses a line', 'respond immediately and forcefully', 'i am angry',
+    'make an example', 'hold them accountable now', 'fire back'
+  ],
+  Dominant: [
+    // Authority assertion
+    'non-negotiable', 'my decision', 'here is what we will do', 'my position is final',
+    'will not be moved', 'my expectation is', 'take control of', 'set the direction',
+    'i will not accept', 'firm boundary', 'my authority', 'final decision',
+    'not open to', 'i have decided', 'make this clear to', 'i am directing',
+    'i will determine', 'there is no alternative', 'i will set',
+    // Additional dominant patterns
+    'i will handle this', 'leave this to me', 'my call to make', 'under my leadership',
+    'not open for debate', 'direction is set', 'i own this decision',
+    'i expect compliance', 'this is my domain', 'i run this programme',
+    'i am the decision-maker', 'i will communicate the outcome',
+    'clear directive', 'i will not negotiate', 'end of discussion', 'my call'
+  ],
+  Strategic: [
+    // Positioning and calculation
+    'how this will land', 'manage the optics', 'what this signals to', 'frame this to',
+    'position this as', 'political capital', 'manage perceptions', 'what serves my',
+    'reputational', 'sequence this carefully',
+    'framing', 'consider the context', 'think through the implications',
+    'navigate', 'manage the narrative', 'position this carefully',
+    'weigh the trade-offs', 'what they actually need', 'how to position',
+    // Additional strategic patterns
+    'the political reality', 'how they will read this', 'the right moment to',
+    'build the coalition', 'time this carefully', 'control the framing',
+    'protect my credibility', 'what the board wants to see', 'before i respond',
+    'manage the sponsor', 'the message i need to send', 'read the room',
+    'how this lands with', 'map the stakeholders', 'protect my position',
+    'manage how this', 'the optics of this'
+  ],
+  Collaborative: [
+    // Genuine engagement (tightened — generic phrases removed)
+    'understand their perspective', 'genuinely open', 'hear them out',
+    'share my thinking', 'co-create', 'genuine conversation', 'be transparent about',
+    'invite them to', 'ask them what', 'explore together', 'mutual understanding',
+    'joint problem', 'open dialogue', 'genuinely curious',
+    'honest conversation', 'create space for', 'listen to what', 'together we can',
+    // More specific collaborative signals
+    'genuinely want your view', 'help me understand what you need', 'what am i not seeing',
+    'want to hear your thinking', 'can we think through this together',
+    'what do you need from this', 'hear what is behind', 'genuinely curious about',
+    'your perspective would help', 'want to understand what is driving',
+    'hear you out fully', 'your read on this', 'build a shared view'
+  ],
+  Transformational: [
+    // Pattern-naming and system-level change
+    'change the relationship', 'trust between', 'reframe', 'shift the dynamic',
+    'be honest about what', 'name what is happening', 'create a new',
+    'what we actually need to address', 'reset the', 'at stake here is',
+    'different kind of', 'underlying issue', 'what this really needs',
+    'name the real issue', 'change what is possible', 'fundamentally different',
+    'what the situation actually requires', 'long-term trust', 'change the pattern',
+    // Additional transformational signals
+    'what is actually happening here', 'the conversation we have not been having',
+    'address the real source', 'what this is costing us', 'address this at the right level',
+    'change the relationship dynamic', 'what would actually shift', 'name what is going on',
+    'beneath the surface', 'the trust issue', 'address this systemically',
+    'what the relationship actually needs', 'what would actually change things'
+  ]
+};
+
+const NEGATIONS = ['not ', 'never ', "don't ", "doesn't ", "won't ", "wouldn't ", 'cannot ', "can't ", 'without ', 'instead of '];
+
+// Per-scenario behavioral rubric signals — carry 2x weight because they are
+// calibrated to the specific decision context rather than vocabulary alone.
+const SCENARIO_SIGNALS = {
+  1: { // The Number That Won't Move
+    Compliance: ['trust the cfo', 'take the metric offline', 'acknowledge the concern and move forward',
+                 'not worth fighting over', 'do as suggested', 'accept his challenge'],
+    Defensive:  ['defend the methodology', 'stand by our numbers', 'challenge his view directly',
+                 'the methodology is sound', 'push back on the characterisation'],
+    Strategic:  ['take this offline with him', 'one-on-one before the next meeting',
+                 'address his concern separately', 'manage this outside the room', 'speak to him privately'],
+    Avoidance:  ['remove the metric this time', 'soften how i present it', 'present without raising it directly',
+                 'table the methodology discussion', 'avoid the confrontation in the meeting'],
+    Transformational: ['name the dynamic directly', 'address the board relationship',
+                       'what this recurring challenge is costing'],
+  },
+  2: { // Authorised Silence
+    Compliance:      ['not authorised to say', 'continue as normal', 'tell them i cannot discuss it',
+                      'follow the ceo instruction', 'stay with what i have been asked to do'],
+    Avoidance:       ['deflect the question', 'change the subject', 'give a non-answer',
+                      'say there is nothing to share'],
+    Strategic:       ['acknowledge i am aware of their concern without disclosing', 'protect the confidence while being honest',
+                      'tell them what i can', 'manage this carefully', 'protect the trust on both sides'],
+    Collaborative:   ['acknowledge what they have noticed', 'validate their instinct',
+                      'let them know their read is not wrong', 'be as honest as i can within the constraint'],
+    Transformational:['name the constraint honestly', 'be transparent about not being able to be transparent',
+                      'acknowledge the discomfort of the situation'],
+  },
+  3: { // The Quiet Reversal
+    Reactive:        ['confront her in the meeting', 'call out her behaviour', 'address this publicly',
+                      'challenge her steering committee comments'],
+    Dominant:        ['reassert my authority over the programme', 'make clear who leads this',
+                      'speak directly to the sponsor', 'shut down her parallel track'],
+    Strategic:       ['understand her motivation', 'what is driving her position shift',
+                      'manage the sponsor relationship first', 'handle the politics before the meeting',
+                      'address her incentive not just her behaviour'],
+    Collaborative:   ['explore her concerns genuinely', 'hear what she actually needs',
+                      'find a way to address her interest', 'understand what changed for her'],
+    Transformational:['name what is happening between us', 'address the trust issue directly',
+                      'have the real conversation about what has shifted'],
+    Avoidance:       ['let it resolve before the governance review', 'hope it settles before the meeting',
+                      'wait and see what she does next'],
+  },
+  4: { // Unacknowledged Credit
+    Compliance:  ['let it go', 'not worth raising', 'rise above it', 'focus on the next project',
+                  'not my place to claim', 'not worth the political cost'],
+    Avoidance:   ['see if it comes up naturally', 'not raise it externally',
+                  'hope it resolves', 'stay focused on moving forward'],
+    Reactive:    ['confront him directly', 'call this out to leadership', 'escalate what happened',
+                  'demand proper attribution'],
+    Strategic:   ['ensure attribution is clear going forward', 'build the record carefully',
+                  'protect team visibility through the right channel', 'document our contribution'],
+    Transformational:['name what this costs the team trust', 'have the honest conversation with him',
+                      'address what integrity requires here', 'name what actually happened'],
+  },
+  5: { // The COO 11th Hour Request
+    Compliance:      ['of course we will accommodate', 'say yes', 'happy to help', 'cannot say no to the coo',
+                      'find a way to meet their needs', 'agree to the request'],
+    Defensive:       ['explain our constraints', 'defend the original scope',
+                      'the timeline does not allow for this', 'make the case for why we cannot'],
+    Reactive:        ['push back immediately', 'explain this is unreasonable', 'this changes everything',
+                      'express my concern strongly', 'challenge the feasibility firmly'],
+    Strategic:       ['understand what is driving the request', 'explore what is commercially possible',
+                      'find a path that protects the relationship and the scope', 'manage the coo relationship carefully'],
+    Collaborative:   ['understand what they actually need underneath this', 'explore together what is possible',
+                      'hear what is behind the request'],
+    Transformational:['ask what decision this request is serving', 'understand the underlying need',
+                      'reframe around what would actually serve them best'],
+  },
+  6: { // The Escalation Email
+    Compliance:      ['apologise', 'accept their framing', 'agree to their terms',
+                      'say we will do better', 'not challenge their characterisation'],
+    Defensive:       ['defend our work', 'challenge their characterisation', 'provide evidence of what was delivered',
+                      'point to the contract terms', 'rebut their claims about outcomes'],
+    Reactive:        ['respond immediately', 'push back on the framing',
+                      'challenge this escalation directly', 'address this urgently and forcefully'],
+    Strategic:       ['manage the md first', 'understand what the client actually needs',
+                      'control the meeting agenda', 'protect the commercial position carefully'],
+    Collaborative:   ['hear what is behind the escalation', 'understand their real concern',
+                      'genuinely understand what went wrong from their perspective'],
+    Transformational:['address the real issue not the symptoms', 'have the honest conversation about what happened',
+                      'name what actually went wrong'],
+  },
+  7: { // The Team That Won't Survive
+    Compliance:  ['run the planning cycle as directed', 'follow the instructions given',
+                  'do what i have been asked', 'continue as normal as instructed'],
+    Avoidance:   ['say nothing yet', 'wait for more information before saying anything',
+                  'keep running as normal', 'not raise the issue until i have to',
+                  'avoid creating concern before necessary'],
+    Strategic:   ['protect the team', 'manage what information comes out when',
+                  'control the message carefully', 'think through what i say and what i do not'],
+    Collaborative:   ['be as honest as i can within the constraint', 'stay connected to them through this',
+                      'acknowledge what i can acknowledge', 'hear their concerns genuinely'],
+    Transformational:['be honest about the constraint i am under', 'name what i can name',
+                      'honour the trust the team has placed in me'],
+    Dominant:    ['take control of the transition', 'run this my way within the mandate',
+                  'set the direction for how this is managed'],
+  },
+  8: { // The Risk the Board Does Not Want to Hear
+    Compliance:      ['accept the committee decision', 'acknowledge their preference to defer',
+                      'monitor as agreed', 'respect the board decision', 'follow their guidance on timing'],
+    Avoidance:       ['present it cautiously', 'note it for the record', 'not push too hard',
+                      'accept another deferral', 'table the detailed discussion for next time'],
+    Defensive:       ['present the evidence again', 'demonstrate the methodology clearly',
+                      'prove the risk is real', 'show the documentation', 'make the case with data and analysis'],
+    Dominant:        ['insist on a decision', 'make clear i will not accept another deferral',
+                      'demand action today', 'state unequivocally what needs to happen'],
+    Strategic:       ['frame this for the committee carefully', 'position this to get a response',
+                      'manage the politics of the room', 'ensure i am on record having raised it',
+                      'protect my position if this materialises'],
+    Collaborative:   ['understand what is making them reluctant', 'hear their concern about timing',
+                      'find a path they can actually take'],
+    Transformational:['name what is happening in this governance dynamic', 'address the fiduciary obligation directly',
+                      'name the real risk including the risk of not acting', 'what integrity requires here'],
+  },
+  9: { // The Parallel Track
+    Reactive:        ['call her out in the meeting', 'challenge her directly in front of the group',
+                      'address her behaviour publicly now', 'name what she has been doing'],
+    Dominant:        ['reassert my authority over the programme', 'make clear who leads this',
+                      'take control back', 'shut down her track'],
+    Compliance:      ['accept her explanation', 'agree she was filling gaps',
+                      'let it go this time', 'not make it an issue'],
+    Avoidance:       ['address it only outside the meeting', 'let it resolve over time',
+                      'not raise it now', 'see how the next phase goes'],
+    Strategic:       ['manage the sponsor relationship', 'address this with her one-on-one',
+                      'understand her incentive before acting', 'handle the politics carefully before the governance review'],
+    Collaborative:   ['explore what genuine alignment looks like', 'hear what she experienced',
+                      'understand where this broke down', 'build a genuine shared governance structure'],
+    Transformational:['name the governance failure', 'address what the programme actually needs',
+                      'have the honest conversation about what happened and why'],
+  },
+  10: { // The Budget That Broke It
+    Compliance:      ['accept his message', 'different vehicle same goal', 'let it go',
+                      'do not make it a big deal', 'move on and collaborate anyway'],
+    Avoidance:       ['not respond immediately', 'let time pass before responding',
+                      'not raise the issue', 'see how the collaboration goes'],
+    Reactive:        ['challenge him directly', 'escalate to leadership', 'confront what he did',
+                      'make clear this is not acceptable behaviour'],
+    Dominant:        ['make clear there are consequences', 'take control of my team narrative',
+                      'assert my position with leadership'],
+    Strategic:       ['protect my team narrative', 'understand what drove his decision',
+                      'manage how this lands with leadership', 'protect the relationship strategically'],
+    Collaborative:   ['have an honest conversation about what happened', 'understand what he needed',
+                      'find a genuine path forward', 'hear his perspective on why'],
+    Transformational:['name what this costs the relationship', 'address what trust requires',
+                      'what actually needs to happen for this to be real collaboration again'],
+  },
+};
+
+const STATE_INSIGHTS = {
+  Avoidance: {
+    pattern_signature: 'Across multiple pressure points, you tend to create space rather than close it — monitoring situations that require naming, gathering information beyond the point of sufficiency, and framing delay as prudence. At senior level this is sophisticated and professionally invisible, which makes it more rather than less costly.',
+    hidden_cost: 'The leadership reputation built on technical competence begins to acquire a quiet asterisk: thoughtful under clarity, absent under genuine pressure. Those who watch most closely — board members, sponsors, senior peers — form their view not on your best moments but on the moments you do not show up.',
+    awareness_moment: 'The pattern activates most consistently when the issue to be named carries relationship risk — when the colleague, sponsor, or stakeholder whose behaviour requires addressing has real authority over you or your team.',
+    development_pathway: 'The development challenge is to name one uncomfortable thing per month, in the room where it matters, before the process of deferral becomes available. Not aggressively. Clearly. And then to sit with what follows without managing it back to safety.',
+    gateway_observation: 'When your direct reports face the conversations that feel too costly to have — with you, with their peers, with upward stakeholders — what do they observe you do in the equivalent situation?',
+    scenarios_of_note: ['Authorised Silence', 'The Risk the Board Does Not Want to Hear'],
+    senior_calibration_note: 'At the 5 to 15 year stage, avoidance has acquired the vocabulary of leadership — prudence, alignment, diligence — which makes it both harder to see and more expensive when it accumulates into a pattern.'
+  },
+  Compliance: {
+    pattern_signature: 'Across the scenarios, your default orientation is toward alignment with the most powerful voice in the room — reading power signals accurately and positioning your response relative to them rather than relative to your own independent judgment. The sophistication of this at senior level makes it look like strategic sensitivity.',
+    hidden_cost: 'The leadership ceiling this creates is specific and rarely articulated: the rooms where organisational direction is genuinely set require a voice that arrives with a position independently formed and held under challenge. Reliable alignment, however skilled, is not invited into those rooms.',
+    awareness_moment: 'The pattern is most visible in scenarios where a senior stakeholder expresses a view before you have formed your own — the calculation of how to position relative to their perspective happens before your own analysis is complete.',
+    development_pathway: 'Before any significant conversation with a senior stakeholder, write your position first — before hearing theirs. Then notice how you modify it afterward, and whether that modification is based on genuine new information or on proximity to power.',
+    gateway_observation: 'What are your direct reports learning from watching how you handle the conversations where your view differs from the most senior person in the room?',
+    scenarios_of_note: ["The Number That Won't Move", 'The Escalation Email'],
+    senior_calibration_note: 'At this career stage, compliance has become indistinguishable from political intelligence — the diagnostic question is not whether you read power signals but whether you act independently of them when it matters.'
+  },
+  Defensive: {
+    pattern_signature: 'Under challenge, your instinct is to establish the ground rather than explore it — bringing evidence to confirm your position, technical rigour to rebut the challenge, and process to absorb the discomfort. The calibre of the defence is high, which makes it professionally convincing and personally invisible.',
+    hidden_cost: 'The information that reaches you has already been pre-sorted for its capacity to survive your scrutiny. The decisions you make on this curated information are less sound than you believe, and the people most capable of improving them have learned it is not worth the effort.',
+    awareness_moment: 'The pattern is most consistently present when feedback, challenge, or new information threatens a position you have formed and communicated — particularly when the challenge arrives from someone who has formal or informal authority over you.',
+    development_pathway: 'In the next significant challenge to a position you hold, respond only with questions for the first five minutes. No data, no context, no clarification. Only questions. Then notice what you learn that you would have defended over.',
+    gateway_observation: 'What does the act of receiving challenge — and being seen to genuinely revise — teach your team about the culture of thinking you are building?',
+    scenarios_of_note: ["The Number That Won't Move", 'The Escalation Email'],
+    senior_calibration_note: 'At the 5 to 15 year experience stage, defensiveness wears the language of professional accountability and evidence-based leadership, which makes it both harder to name and more damaging when it shapes the information environment around you.'
+  },
+  Reactive: {
+    pattern_signature: 'Under significant pressure, the speed and force of your response outpaces the thinking behind it — decisiveness and conviction are present, but they are calibrated to the feeling produced by the situation rather than to the consequences of the response. The intelligence is real; the regulation is the development edge.',
+    hidden_cost: 'Reactive senior leaders train their organisations to manage their moods before managing the problems. Information is pre-filtered for its ability to produce a measured reaction. By the time something reaches you, the urgency has been processed out of it — and your response time to genuine risk has slowed to a pace you are not aware of.',
+    awareness_moment: 'The pattern activates most clearly in scenarios where a challenge, misattribution, or escalation feels like a direct test of your competence or integrity — the stronger the conviction that something is wrong, the faster and less examined the response.',
+    development_pathway: 'Any response to a provocation that feels significant must have a minimum 24-hour period between the initial internal reaction and the communicated position. Not because the first reaction is wrong. Because the second is almost always better.',
+    gateway_observation: 'What do the people who work most closely with you do in the moments before bringing you difficult information — and what does that tell you about the environment your response pattern is creating?',
+    scenarios_of_note: ['The Escalation Email', 'The Parallel Track'],
+    senior_calibration_note: 'At senior level, reactive behaviour has been refined enough to pass as decisive leadership — the charge is channelled into conviction rather than expressed as visible emotion, which makes it harder to catch and slower to correct.'
+  },
+  Dominant: {
+    pattern_signature: 'Across the pressure points, your instinct is to resolve uncertainty by setting direction — through clear positioning, early framing, and a confidence that closes rather than opens the conversation. The capability is real and often effective; the cost is what the room stops producing in the presence of it.',
+    hidden_cost: 'The highest-stakes work — transformation mandates, genuine strategic pivots, post-crisis rebuilding — requires organisations whose people independently choose to follow rather than comply. Dominant leadership builds compliance. That compliance looks like followership until the moment you are absent.',
+    awareness_moment: 'The pattern is most visible in the scenarios involving uncertainty or perceived challenge to your authority — the instinct to resolve the uncertainty by asserting direction appears before the full complexity of the situation has been made visible.',
+    development_pathway: 'In the next significant decision meeting you chair, do not speak until at least three others have fully contributed. Note what the room produces before your position has shaped it. Then ask whether your first instinct about the right direction has changed.',
+    gateway_observation: 'When your direct reports face a situation with genuine uncertainty — not the uncertainty you have resolved for them, but new uncertainty — what capability do they have to think through it independently?',
+    scenarios_of_note: ['The Quiet Reversal', 'The Parallel Track'],
+    senior_calibration_note: 'At the 5 to 15 year stage, dominance has become architectural rather than visible — it operates through agenda control, pre-meeting framing, and the certainty with which positions are presented, which makes it both harder to name and more systemically limiting.'
+  },
+  Strategic: {
+    pattern_signature: 'You operate with clear awareness of audience, timing, and consequence — choosing your response based on outcome mapping rather than reaction. At senior level this is the expected baseline; the diagnostic question your pattern raises is whether the strategy is in service of the institution or primarily in service of your positioning within it.',
+    hidden_cost: 'The specific trust cost of strategic-as-calculation is that the people closest to you admire your competence and cannot fully rely on your judgment — they must model your incentives before they can predict your decision. That uncertainty limits the quality of the mandate they give you under genuine pressure.',
+    awareness_moment: "The pattern is most observable in the scenarios where your own positioning and the institution's interest diverge — watch for the moments where your framing serves the outcome and also happens to serve your reputation, and ask which came first.",
+    development_pathway: 'The development edge is transparency about your reasoning — making visible not just the conclusion but the trade-offs considered and the values that resolved them. The leader whose working can be seen is trusted in a fundamentally different way than the leader whose conclusions are simply well-constructed.',
+    gateway_observation: 'In the major decisions of the past quarter, what would you have done differently if your own position were not a variable — and what does the honest answer to that question suggest about your next development edge?',
+    scenarios_of_note: ['Authorised Silence', 'The Risk the Board Does Not Want to Hear'],
+    senior_calibration_note: 'At this career stage, Strategic is the legitimate baseline — the diagnostic question shifts to whether the calculation is increasingly in service of the organisation rather than the individual, and whether wisdom is beginning to replace optimisation.'
+  },
+  Collaborative: {
+    pattern_signature: 'You create conditions for genuine engagement — listening before directing, inviting contribution rather than requiring it, and demonstrating openness to having your position revised. The senior-level diagnostic pressure is on with whom this is authentic: the pattern under safe conditions is insufficient evidence; what matters is whether it holds with those who have real authority over you.',
+    hidden_cost: 'The specific career cost at this stage is a diffusion of individual accountability that reads, over time, as the inability to make a decision alone. The decisions get made — but through a process that distributes responsibility so widely that no one person has actually led. Senior leaders need both genuine consultation and clear directional ownership.',
+    awareness_moment: 'The pattern is most visible in the scenarios involving significant personal stakes — watch for the moments where the consultation process continues past the point of sufficiency, and ask honestly whether you are gathering information or distributing the decision.',
+    development_pathway: 'The development challenge is to identify, in your own process, the moment at which you have gathered enough — and then to stop, form a view, and lead from it clearly and with your name on it. Collaboration requires both genuine openness and individual courage.',
+    gateway_observation: 'When the conversation has been thorough and the team has contributed well — and a direction still needs to be named — what do your direct reports observe you do?',
+    scenarios_of_note: ["The Team That Won't Survive", 'The Budget That Broke It'],
+    senior_calibration_note: 'At the 5 to 15 year stage, collaborative behaviour is a genuine and valued competency — the diagnostic question is whether it is accompanied by the individual courage to own a direction, particularly in rooms where that ownership carries real personal risk.'
+  },
+  Transformational: {
+    pattern_signature: 'Your responses show a consistent orientation toward what the situation actually requires rather than what it conventionally demands — naming what is real, reframing what is stuck, and creating conditions for the relationship or decision to move differently. This is a high signal at any career stage; the development edge at senior level is sustainability and scale.',
+    hidden_cost: 'The risk for the genuinely transformational leader is inconsistency under sustained pressure — the pattern that holds on good days and under moderate challenge must be tested in the quarters where the organisation is genuinely stressed. Under those conditions, the pattern defaults, and the speed of the return is the real diagnostic.',
+    awareness_moment: 'The pattern is most observable in scenarios where the conventional response is available and tempting — note the moments where you chose to name the harder thing, and ask whether you can create conditions for that choice to be made systematically by others when you are not in the room.',
+    development_pathway: 'The next horizon is institutional: embedding the decision pattern into the culture rather than expressing it individually. The transformational senior leader who is genuinely developing is building conditions where people who have never met them make better decisions because of the environment they created.',
+    gateway_observation: 'What decisions is your team making well when you are not in the room — and what does the honest answer to that question reveal about the difference between your personal leadership and the leadership culture you are building?',
+    scenarios_of_note: ['The Risk the Board Does Not Want to Hear', "The Team That Won't Survive"],
+    senior_calibration_note: 'At the 5 to 15 year stage, transformational behaviour is the ceiling of individual expression — the development question is no longer whether you can change a conversation but whether you can change how conversations happen at organisational scale.'
+  }
+};
+
+function scoreResponse(text, scenarioId) {
+  const lower = text.toLowerCase();
+  const scores = {};
+  for (const [state, markers] of Object.entries(MARKERS)) {
+    let count = 0;
+    for (const marker of markers) {
+      const isPhrase = marker.includes(' ');
+      let idx;
+      if (isPhrase) {
+        idx = lower.indexOf(marker);
+      } else {
+        const escaped = marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const m = lower.match(new RegExp('\\b' + escaped + '\\b'));
+        idx = m ? m.index : -1;
+      }
+      if (idx === -1) continue;
+      const before = lower.slice(Math.max(0, idx - 45), idx);
+      const hasNegation = NEGATIONS.some(neg => before.includes(neg));
+      if (!hasNegation) count++;
+    }
+    scores[state] = count;
+  }
+  // Scenario rubric signals — 2x weight (contextually calibrated to the decision)
+  const rubric = scenarioId && SCENARIO_SIGNALS[scenarioId];
+  if (rubric) {
+    for (const [state, signals] of Object.entries(rubric)) {
+      for (const signal of signals) {
+        if (lower.includes(signal)) scores[state] = (scores[state] || 0) + 2;
+      }
+    }
+  }
+  return scores;
+}
+
+function aggregateResults(allResponses) {
+  const totals = Object.fromEntries(STATE_KEYS.map(k => [k, 0]));
+  const scenarioHighScores = {};
+  const domainTotals = Object.fromEntries(Object.keys(DOMAIN_SCENARIOS).map(d => [d, 0]));
+
+  for (const scenario of SCENARIOS) {
+    const text = allResponses[scenario.id] || '';
+    const s = scoreResponse(text, scenario.id);
+    const topState = STATE_KEYS.slice().sort((a, b) => s[b] - s[a])[0];
+    scenarioHighScores[scenario.title] = topState;
+    const scenarioTotal = Object.values(s).reduce((a, b) => a + b, 0);
+    for (const [domain, titles] of Object.entries(DOMAIN_SCENARIOS)) {
+      if (titles.includes(scenario.title)) domainTotals[domain] += scenarioTotal;
+    }
+    for (const k of STATE_KEYS) totals[k] += s[k];
+  }
+
+  const maxTotal = Math.max(...Object.values(totals), 1);
+  const state_scores = Object.fromEntries(
+    STATE_KEYS.map(k => [k, Math.round((totals[k] / maxTotal) * 10)])
+  );
+
+  const sorted = STATE_KEYS.slice().sort((a, b) => state_scores[b] - state_scores[a]);
+  const primary_state = sorted[0];
+
+  if (state_scores[primary_state] === 0) {
+    return { insufficient_data: true };
+  }
+
+  // Secondary state only assigned if it reaches 40% of primary raw score
+  const secondaryCandidate = sorted[1] !== primary_state ? sorted[1] : (sorted[2] || null);
+  const secondary_state = secondaryCandidate &&
+    (totals[secondaryCandidate] / Math.max(totals[primary_state], 1)) >= 0.40
+    ? secondaryCandidate : null;
+
+  // Weakest domain — lowest total signal across its two scenarios
+  const weakest_domain = Object.entries(domainTotals).sort(([, a], [, b]) => a - b)[0][0];
+
+  const scenariosOfNote = Object.entries(scenarioHighScores)
+    .filter(([, state]) => state === primary_state)
+    .map(([title]) => title)
+    .slice(0, 2);
+
+  const insights = STATE_INSIGHTS[primary_state];
+
+  const comboKey = secondary_state ? `${primary_state}+${secondary_state}` : null;
+  const combo_note = comboKey && COMBO_PROGRAMMES[comboKey] ? COMBO_PROGRAMMES[comboKey] : null;
+  const domain_note = DOMAIN_WEAK_NOTE[weakest_domain] || null;
+
+  return {
+    primary_state,
+    secondary_state,
+    state_scores,
+    weakest_domain,
+    combo_note,
+    domain_note,
+    pattern_signature: insights.pattern_signature,
+    hidden_cost: insights.hidden_cost,
+    awareness_moment: insights.awareness_moment,
+    development_pathway: insights.development_pathway,
+    gateway_observation: insights.gateway_observation,
+    scenarios_of_note: scenariosOfNote.length > 0 ? scenariosOfNote : insights.scenarios_of_note,
+    senior_calibration_note: insights.senior_calibration_note
+  };
+}
+
+// ─── Programme Mapping — Senior Level ────────────────────────────────────────
+const PROGRAMMES = {
+  Avoidance: {
+    primary: 'Presence Amplifier™',
+    supporting: 'Influence Under Pressure™',
+    message: 'Your responses suggest a pattern of stepping back from directness when the stakes feel high. The work ahead is building the presence and composure to stay in the room — and say the thing clearly. Presence Amplifier™ builds the authority to name what needs to be named; Influence Under Pressure™ equips you for the specific moments that trigger retreat.'
+  },
+  Compliance: {
+    primary: 'Voice of Influence™',
+    supporting: 'Power–Vulnerability Matrix™',
+    message: 'Your responses suggest a tendency to align with the dominant voice rather than hold your own. The work ahead is developing a clear, independent perspective and the confidence to put it in front of people who hold power. Voice of Influence™ develops and projects an authentic leadership voice; Power–Vulnerability Matrix™ teaches how to hold authority without capitulating to the most powerful person in the room.'
+  },
+  Defensive: {
+    primary: 'The Listening Lab™',
+    supporting: 'Influence Under Pressure™',
+    message: 'Your responses suggest that challenge or scrutiny tends to close you down rather than open you up. The work ahead is building genuine receptivity to friction — so it improves your decisions rather than distorting them. The Listening Lab™ develops real capacity to hear challenge without self-protection; Influence Under Pressure™ replaces defensive reactions with composed, grounded responses.'
+  },
+  Reactive: {
+    primary: 'Power–Vulnerability Matrix™',
+    supporting: 'Decision-Making Dialogues™',
+    message: 'Your responses suggest that pressure accelerates your communication rather than sharpening it. The work ahead is developing the ability to pause, calibrate, and respond with authority rather than urgency. Power–Vulnerability Matrix™ builds adaptive response calibration between authority and restraint; Decision-Making Dialogues™ introduces structured pauses and deliberate framing before you act.'
+  },
+  Dominant: {
+    primary: 'Power–Vulnerability Matrix™',
+    supporting: 'The Listening Lab™',
+    message: 'Your responses suggest a strong directional instinct that often moves faster than the room. The work ahead is learning to hear what the room is producing before you direct it — and trusting that the output will be stronger. Power–Vulnerability Matrix™ rebalances authority with genuine openness; The Listening Lab™ develops the capacity to hear the room before closing it.'
+  },
+  Strategic: {
+    primary: 'Leadership Presence Lab™',
+    supporting: 'Decision-Making Dialogues™',
+    message: 'Your responses reflect calculated, considered positioning. The work ahead is making that reasoning visible to others — so your influence builds institutional trust rather than operating through opacity. Leadership Presence Lab™ develops the gravitas to make your reasoning legible to those around you; Decision-Making Dialogues™ converts private calculation into shared deliberation.'
+  },
+  Collaborative: {
+    primary: 'Voice of Influence™',
+    supporting: 'Leadership Presence Lab™',
+    message: 'Your responses reflect a strong orientation toward collective thinking. The work ahead is converting shared intelligence into individual conviction — learning to own a direction clearly and carry it with authority. Voice of Influence™ builds the capacity to hold and project a position publicly; Leadership Presence Lab™ develops the gravitas to lead from it.'
+  },
+  Transformational: {
+    primary: 'Executive Communication Coaching',
+    supporting: 'Influence Under Pressure™',
+    message: 'Your responses reflect a mature, integrative communication pattern. The work ahead is sustaining this under organisational pressure and embedding it beyond your own practice — into the culture and teams around you. Executive Communication Coaching anchors the pattern at executive scale; Influence Under Pressure™ ensures it holds through the conditions that most reliably erode it.'
+  }
+};
+
+// ─── Combination Programme Notes — Primary + Secondary ───────────────────────
+// Only real Eloqaura modules referenced. Only the most diagnostically significant
+// pairings are listed; unmatched pairs fall back to single-state programme.
+const COMBO_PROGRAMMES = {
+  'Strategic+Avoidance':
+    'Your Strategic pattern co-exists with a tendency to withdraw from directness under pressure. Leadership Presence Lab™ — specifically through the track on naming what is uncomfortable — addresses the gap between calculating well and saying the thing that needs to be said.',
+  'Strategic+Defensive':
+    'Your Strategic orientation co-exists with a defensive response when challenged. Decision-Making Dialogues™ and The Listening Lab™ together address the gap between positioning well externally and revising genuinely when the information warrants it.',
+  'Strategic+Compliance':
+    'Your strategic awareness co-exists with a tendency to defer when the most powerful voice is present. Voice of Influence™ — specifically the track on holding a position independently formed — closes this gap.',
+  'Collaborative+Avoidance':
+    'Your collaborative instinct stops short of the difficult decision or naming. Voice of Influence™ — specifically the track on directness within trusting relationships — addresses the gap between genuine openness and the willingness to own a clear direction.',
+  'Collaborative+Compliance':
+    'Your collaborative orientation co-exists with deference to dominant voices in the room. Voice of Influence™ combined with Power–Vulnerability Matrix™ develops the capacity to consult genuinely and hold a position independently.',
+  'Dominant+Reactive':
+    'Your dominant communication combines with reactive escalation under pressure. Power–Vulnerability Matrix™ addresses both — the authority-restraint calibration and the specific regulation layer that prevents force from arriving before thinking.',
+  'Dominant+Defensive':
+    'Your dominant pattern combines with evidence-based defence when challenged. The Listening Lab™ addresses the specific development edge: creating conditions where challenge improves your decisions rather than landing as an authority contest.',
+  'Defensive+Compliance':
+    'Evidence-based defence combined with deference to authority creates a pattern that is technically rigorous but ultimately deferential. The Listening Lab™ and Voice of Influence™ together address both ends of this gap.',
+  'Reactive+Dominant':
+    'Your reactive escalation and dominant direction combine into a pattern that is fast and decisive but can outpace the situation. Power–Vulnerability Matrix™ and Influence Under Pressure™ together address the regulation layer.',
+  'Avoidance+Compliance':
+    'A pattern of avoiding directness combined with deference to authority creates significant invisibility at senior level. Presence Amplifier™ — specifically the track on naming difficult things to those with authority over you — is the primary development focus.',
+  'Transformational+Strategic':
+    'You operate at a high level. The specific development edge is making your reasoning visible rather than arriving with conclusions — building institutional trust rather than reliance on your individual judgment. Executive Communication Coaching, advanced cohort.',
+  'Transformational+Collaborative':
+    'Your transformational pattern is accompanied by a strong collaborative instinct. The development edge is scale: embedding the conditions for transformational thinking beyond your direct relationships. Executive Communication Coaching, institutional track.',
+};
+
+// ─── Domain Weakness Notes ────────────────────────────────────────────────────
+const DOMAIN_WEAK_NOTE = {
+  'Managing Up':
+    'Your weakest signals appeared in Managing Up scenarios — navigating authority relationships and delivering difficult news upward. Programme sessions should weight these contexts specifically.',
+  'Political Coalitions':
+    'Your weakest signals appeared in Political Coalition scenarios — managing peer dynamics, coalition-building, and credit. Programme sessions should weight peer-complexity contexts specifically.',
+  'Client Escalation':
+    'Your weakest signals appeared in Client Escalation scenarios — holding commercial and relational boundaries under external pressure simultaneously.',
+  'Strategic Bad News':
+    'Your weakest signals appeared in Strategic Bad News scenarios — communicating difficult information with clarity to teams and boards while preserving trust.',
+  'Cross-Functional Conflict':
+    'Your weakest signals appeared in Cross-Functional Conflict scenarios — navigating interdependency, competing mandates, and shared accountability without formal authority.',
+};
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+const wordCount = str => str.trim().split(/\s+/).filter(w => w.length > 0).length;
+const WORD_MIN = 35;
+
+// ─── Constellation Component ──────────────────────────────────────────────────
+function SeniorConstellation({ analysis, animate = true, size = 520 }) {
+  const cx = size / 2;
+  const cy = size / 2;
+  const nodeRadius = size * 0.42;
+
+  const angleToXY = useCallback((angleDeg, r = nodeRadius) => {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }, [cx, cy, nodeRadius]);
+
+  const nodePositions = useMemo(() => {
+    const m = {};
+    for (const [k, def] of Object.entries(E8)) {
+      m[k] = angleToXY(def.angle);
+    }
+    return m;
+  }, [size, angleToXY]);
+
+  const scores = analysis?.state_scores || {};
+  const primaryState = analysis?.primary_state;
+  const secondaryState = analysis?.secondary_state;
+
+  // Sorted states by score for path threading
+  const sortedByScore = useMemo(() =>
+    Object.entries(scores)
+      .sort(([,a],[,b]) => b - a)
+      .map(([k]) => k),
+    [scores]
+  );
+
+  // Journey path through top 6 states by score
+  const journeyPath = useMemo(() => {
+    const pts = sortedByScore.slice(0, 6).map(k => nodePositions[k]).filter(Boolean);
+    if (pts.length < 2) return '';
+    let d = `M ${pts[0].x} ${pts[0].y}`;
+    for (let i = 1; i < pts.length; i++) {
+      const prev = pts[i-1];
+      const curr = pts[i];
+      const ctrlX = (prev.x + curr.x) / 2 + (cx - (prev.x + curr.x)/2) * 0.22;
+      const ctrlY = (prev.y + curr.y) / 2 + (cy - (prev.y + curr.y)/2) * 0.22;
+      d += ` Q ${ctrlX} ${ctrlY} ${curr.x} ${curr.y}`;
+    }
+    return d;
+  }, [sortedByScore, nodePositions, cx, cy]);
+
+  // Centre of gravity
+  const gravity = useMemo(() => {
+    const total = Object.values(scores).reduce((s, v) => s + v, 0);
+    if (total === 0) return null;
+    let gx = 0, gy = 0;
+    for (const [k, w] of Object.entries(scores)) {
+      const p = nodePositions[k];
+      if (!p) continue;
+      gx += p.x * w;
+      gy += p.y * w;
+    }
+    return { x: gx / total, y: gy / total };
+  }, [scores, nodePositions]);
+
+  const ringRadii = [size * 0.18, size * 0.28, size * 0.38];
+  const maxScore = Math.max(...Object.values(scores), 1);
+
+  // Ambient particle field
+  const particles = useMemo(() =>
+    Array.from({ length: 18 }, (_, i) => ({
+      cx: cx + (Math.random() - 0.5) * size * 1.1,
+      cy: cy + (Math.random() - 0.5) * size * 1.1,
+      r: 0.4 + Math.random() * 0.9,
+      delay: Math.random() * 8,
+      duration: 6 + Math.random() * 10,
+      dx: (Math.random() - 0.5) * 40,
+      dy: (Math.random() - 0.5) * 40,
+    })), [cx, cy, size]);
+
+  return (
+    <svg
+      viewBox={`${-70} ${-70} ${size + 140} ${size + 140}`}
+      style={{ width: '100%', height: '100%', overflow: 'visible' }}
+    >
+      <defs>
+        <radialGradient id="cgTeal" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#00E5C4" stopOpacity="0.9" />
+          <stop offset="30%" stopColor="#00C4A8" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#00C4A8" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="nodeGlowTeal" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#00E5C4" stopOpacity="0.7" />
+          <stop offset="50%" stopColor="#00E5C4" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#00E5C4" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="nodeGlowCoral" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FF6B4A" stopOpacity="0.65" />
+          <stop offset="50%" stopColor="#FF6B4A" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#FF6B4A" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="threadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#00E5C4" stopOpacity="0.95" />
+          <stop offset="35%" stopColor="#00C4A8" stopOpacity="0.7" />
+          <stop offset="65%" stopColor="#329DF6" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#FF6B4A" stopOpacity="0.85" />
+        </linearGradient>
+        <filter id="glowFilter" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="3.5" result="b" />
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glowStrong" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="7" result="b" />
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <radialGradient id="nodeGlowInner" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#00E5C4" stopOpacity="0.9" />
+          <stop offset="60%" stopColor="#00E5C4" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#00E5C4" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* Ambient particle field */}
+      {particles.map((p, i) => (
+        <circle key={`particle-${i}`}
+          cx={p.cx} cy={p.cy} r={p.r}
+          fill="#00E5C4"
+          fillOpacity="0"
+          style={animate ? {
+            animation: `floatParticle ${p.duration}s ease-in-out ${p.delay}s infinite`,
+          } : {}}
+        />
+      ))}
+
+      {/* Group band rings — Elevated / Protective / Survival zones */}
+      {ringRadii.map((r, i) => {
+        const labels = ['Elevated', 'Protective', 'Survival'];
+        const strokeOpacities = [0.18, 0.13, 0.09];
+        const bandColors = ['#00E5C4', '#FF6B4A', '#A78FCE'];
+        return (
+          <g key={`ring-${i}`}>
+            <circle cx={cx} cy={cy} r={r} fill="none"
+              stroke={bandColors[i]} strokeOpacity={strokeOpacities[i]}
+              strokeWidth="0.7" strokeDasharray="3 6" />
+            <text
+              x={cx} y={cy - r - 5}
+              textAnchor="middle"
+              fill={bandColors[i]} fillOpacity="0.55"
+              fontSize="9" fontFamily="'DM Mono', monospace"
+              letterSpacing="0.2em"
+            >
+              {labels[i].toUpperCase()}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Outer ring — stronger */}
+      <circle cx={cx} cy={cy} r={nodeRadius} fill="none"
+        stroke="rgba(0,229,196,0.16)" strokeWidth="0.6" />
+      <circle cx={cx} cy={cy} r={nodeRadius + 3} fill="none"
+        stroke="rgba(0,229,196,0.06)" strokeWidth="1.5" />
+
+      {/* Lattice lines centre → node — thicker, more visible */}
+      {STATE_KEYS.map(k => {
+        const p = nodePositions[k];
+        const isPrimary = k === primaryState;
+        return (
+          <line key={`lat-${k}`} x1={cx} y1={cy} x2={p.x} y2={p.y}
+            stroke={isPrimary ? '#00E5C4' : '#00C4A8'}
+            strokeOpacity={isPrimary ? 0.18 : 0.09}
+            strokeWidth={isPrimary ? 0.8 : 0.5}
+            strokeDasharray={isPrimary ? '2 3' : '1 4'} />
+        );
+      })}
+
+      {/* Cross-node lattice — thicker, better opacity */}
+      {STATE_KEYS.map((k1, i) =>
+        STATE_KEYS.slice(i + 2).map(k2 => {
+          const p1 = nodePositions[k1];
+          const p2 = nodePositions[k2];
+          const isPrimaryEdge = k1 === primaryState || k2 === primaryState;
+          return (
+            <line key={`cross-${k1}-${k2}`}
+              x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}
+              stroke={isPrimaryEdge ? '#00E5C4' : '#00C4A8'}
+              strokeOpacity={isPrimaryEdge ? 0.09 : 0.05}
+              strokeWidth={isPrimaryEdge ? 0.5 : 0.35} />
+          );
+        })
+      )}
+
+      {/* Score-proportional inner halos — 3 layers per node */}
+      {STATE_KEYS.map(k => {
+        const p = nodePositions[k];
+        const score = scores[k] || 0;
+        const scoreRatio = score / maxScore;
+        const stateColor = E8[k].color;
+        return (
+          <g key={`halos-${k}`}>
+            <circle cx={p.x} cy={p.y} r={scoreRatio * 32 + 6}
+              fill={stateColor} fillOpacity={score > 0 ? 0.04 : 0} />
+            <circle cx={p.x} cy={p.y} r={scoreRatio * 18 + 3}
+              fill={stateColor} fillOpacity={score > 0 ? 0.08 : 0} />
+            <circle cx={p.x} cy={p.y} r={scoreRatio * 8 + 2}
+              fill={stateColor} fillOpacity={score > 0 ? 0.14 : 0} />
+          </g>
+        );
+      })}
+
+      {/* Journey thread — thicker with dash flow */}
+      {journeyPath && (
+        <path
+          d={journeyPath}
+          fill="none"
+          stroke="url(#threadGrad)"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          filter="url(#glowFilter)"
+          style={animate ? {
+            strokeDasharray: '12 1600',
+            strokeDashoffset: 2000,
+            animation: 'drawLine 3.8s ease-out 0.8s forwards, dashFlow 8s linear 5s infinite, fadeIn 0.5s ease-out 0.8s forwards',
+            opacity: 0,
+          } : { opacity: 0.85 }}
+        />
+      )}
+
+      {/* State nodes — enhanced multi-layer */}
+      {STATE_KEYS.map(k => {
+        const p = nodePositions[k];
+        const isPrimary = k === primaryState;
+        const isSecondary = k === secondaryState;
+        const score = scores[k] || 0;
+        const baseR = isPrimary ? 11 : isSecondary ? 7 : Math.max(3, (score / maxScore) * 6);
+        const stateColor = E8[k].color;
+
+        return (
+          <g key={`node-${k}`}>
+            {/* Outer glow ring for primary */}
+            {isPrimary && (
+              <circle cx={p.x} cy={p.y} r={baseR * 3.5}
+                fill="url(#nodeGlowTeal)"
+                style={{ animation: 'pulse 3s ease-in-out infinite' }}
+              />
+            )}
+            {/* Mid glow ring */}
+            {(isPrimary || isSecondary) && (
+              <circle cx={p.x} cy={p.y} r={baseR * 2.2}
+                fill={isPrimary ? 'url(#nodeGlowInner)' : 'url(#nodeGlowCoral)'}
+                style={{ animation: `pulse ${isPrimary ? 2.6 : 3.8}s ease-in-out ${isPrimary ? 0 : 0.6}s infinite` }}
+              />
+            )}
+            {/* Orbital ring for primary */}
+            {isPrimary && (
+              <circle cx={p.x} cy={p.y} r={baseR * 2.0}
+                fill="none"
+                stroke="#00E5C4" strokeOpacity="0.25" strokeWidth="0.5"
+                strokeDasharray="2 4"
+                style={{ animation: 'pulseRing 3s ease-in-out infinite' }}
+              />
+            )}
+            {/* Core node */}
+            <circle
+              cx={p.x} cy={p.y} r={baseR}
+              fill={isPrimary ? '#00E5C4' : isSecondary ? '#FF6B4A' : stateColor}
+              fillOpacity={isPrimary ? 1 : isSecondary ? 0.92 : 0.65}
+              filter={isPrimary ? 'url(#glowStrong)' : isSecondary ? 'url(#glowFilter)' : ''}
+              style={animate ? {
+                opacity: 0,
+                animation: `nodeLit 0.5s ease-out ${isPrimary ? 4.2 : isSecondary ? 4.6 : 0.2 + STATE_KEYS.indexOf(k) * 0.05}s forwards`
+              } : {}}
+            />
+            {/* Inner bright dot for primary */}
+            {isPrimary && (
+              <circle cx={p.x} cy={p.y} r={baseR * 0.35}
+                fill="#fff" fillOpacity="0.7" />
+            )}
+          </g>
+        );
+      })}
+
+      {/* State labels — larger, higher contrast */}
+      {STATE_KEYS.map(k => {
+        const def = E8[k];
+        const labelPos = angleToXY(def.angle, nodeRadius * 1.24);
+        const a = def.angle;
+        const isPrimary = k === primaryState;
+        const isSecondary = k === secondaryState;
+        const fontSize = isPrimary ? 14 : isSecondary ? 12 : 10;
+        let textAnchor = 'middle';
+        if (a > 5 && a < 175) textAnchor = 'start';
+        if (a > 185 && a < 355) textAnchor = 'end';
+
+        return (
+          <text key={`lbl-${k}`}
+            x={labelPos.x} y={labelPos.y}
+            textAnchor={textAnchor}
+            dominantBaseline="middle"
+            fill={isPrimary ? '#00E5C4' : isSecondary ? '#FF6B4A' : '#9CC8D8'}
+            fillOpacity={isPrimary ? 1 : isSecondary ? 0.9 : 0.7}
+            fontSize={fontSize}
+            fontFamily="'Cormorant Garamond', serif"
+            fontStyle="italic"
+            letterSpacing="0.06em"
+            style={{
+              ...(isPrimary ? { textShadow: '0 0 18px rgba(0,229,196,0.5), 0 0 6px rgba(0,229,196,0.25)' } : {}),
+              ...(animate ? {
+                opacity: 0,
+                animation: `fadeUp 0.6s ease-out ${0.4 + STATE_KEYS.indexOf(k) * 0.06}s forwards`
+              } : {})
+            }}
+          >
+            {k}
+          </text>
+        );
+      })}
+
+      {/* Awareness Point — multi-ripple centre */}
+      <circle cx={cx} cy={cy} r="72" fill="none" stroke="#00E5C4" strokeOpacity="0.06" strokeWidth="0.4"
+        style={{ animation: 'pulseRing 6s ease-in-out infinite' }} />
+      <circle cx={cx} cy={cy} r="56" fill="none" stroke="#00E5C4" strokeOpacity="0.10" strokeWidth="0.5"
+        style={{ animation: 'pulseRing 5s ease-in-out infinite reverse' }} />
+      <circle cx={cx} cy={cy} r="42" fill="none" stroke="#00E5C4" strokeOpacity="0.16" strokeWidth="0.6"
+        style={{ animation: 'pulseRing 4s ease-in-out infinite' }} />
+      <circle cx={cx} cy={cy} r="28" fill="url(#cgTeal)"
+        style={{ animation: 'pulse 3.5s ease-in-out infinite' }} />
+      <circle cx={cx} cy={cy} r="5" fill="#00E5C4" filter="url(#glowFilter)" />
+      <circle cx={cx} cy={cy} r="2" fill="#fff" fillOpacity="0.6" />
+      <text x={cx} y={cy + size * 0.08} textAnchor="middle"
+        fill="#00E5C4" fillOpacity="0.75" fontSize="10"
+        fontFamily="'Cormorant Garamond', serif" fontStyle="italic" letterSpacing="0.22em">
+        the awareness point
+      </text>
+
+      {/* Centre of gravity — more prominent */}
+      {gravity && (
+        <g style={animate ? {
+          opacity: 0,
+          animation: 'nodeLit 0.8s ease-out 5.2s forwards'
+        } : {}}>
+          <circle cx={gravity.x} cy={gravity.y} r="20" fill="#00E5C4" fillOpacity="0.07" />
+          <circle cx={gravity.x} cy={gravity.y} r="10" fill="#00E5C4" fillOpacity="0.18" />
+          <circle cx={gravity.x} cy={gravity.y} r="4" fill="#00E5C4" fillOpacity="0.55" />
+          <circle cx={gravity.x} cy={gravity.y} r="1.5" fill="#fff" fillOpacity="0.5" />
+        </g>
+      )}
+    </svg>
+  );
+}
+
+// ─── Domain Heat Map ──────────────────────────────────────────────────────────
+function DomainHeatMap({ analysis }) {
+  const scenariosOfNote = analysis?.scenarios_of_note || [];
+  return (
+    <div>
+      <p style={{ fontSize: '0.625rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--mid)', marginBottom: '1.25rem', fontFamily: 'var(--mono)' }}>
+        Pattern Intensity by Pressure Domain
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        {Object.entries(DOMAIN_SCENARIOS).map(([domain, scenarios]) => {
+          const matches = scenarios.filter(s => scenariosOfNote.includes(s)).length;
+          const intensity = matches === 2 ? 1.0 : matches === 1 ? 0.65 : 0.28;
+          const dc = DOMAIN_COLOR[domain];
+          return (
+            <div key={domain} className="domain-card" style={{
+              borderLeftColor: intensity > 0.5 ? dc : 'rgba(255,255,255,0.06)',
+              borderLeftWidth: '2px',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.6875rem', color: intensity > 0.5 ? 'var(--white)' : 'var(--mid)', fontFamily: 'var(--mono)', letterSpacing: '0.05em' }}>
+                  {domain}
+                </span>
+                {matches > 0 && (
+                  <span style={{ fontSize: '0.5625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: dc, fontFamily: 'var(--mono)' }}>
+                    pattern active
+                  </span>
+                )}
+              </div>
+              <div className="bar-track">
+                <div className="bar-fill" style={{
+                  width: `${Math.max(intensity * 100, 5)}%`,
+                  background: intensity > 0.5
+                    ? `linear-gradient(to right, ${dc}88, ${dc})`
+                    : `linear-gradient(to right, ${dc}44, ${dc}88)`,
+                  opacity: intensity > 0.5 ? 1 : 0.55,
+                  boxShadow: intensity > 0.5 ? `0 0 8px ${dc}33` : 'none',
+                }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── Reveal Sequence ──────────────────────────────────────────────────────────
+function RevealSequence({ onComplete }) {
+  const [stage, setStage] = useState(0);
+
+  useEffect(() => {
+    const timers = [
+      setTimeout(() => setStage(1), 900),
+      setTimeout(() => setStage(2), 2400),
+      setTimeout(() => setStage(3), 3800),
+      setTimeout(() => setStage(4), 5200),
+      setTimeout(() => onComplete(), 6800),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [onComplete]);
+
+  const lines = [
+    'Reading your responses across ten pressure domains.',
+    'Identifying the primary decision state.',
+    'Mapping the pattern beneath the surface behaviour.',
+    'Calibrating for senior leadership context.',
+    'Resolving.',
+  ];
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+      <svg style={{ position: 'absolute', width: '520px', height: '520px', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} viewBox="0 0 520 520">
+        <circle cx="260" cy="260" r="220" fill="none" stroke="#00E5C4" strokeOpacity="0.05" strokeWidth="0.5"
+          style={{ animation: 'pulseRing 6s ease-in-out infinite' }} />
+        <circle cx="260" cy="260" r="155" fill="none" stroke="#00E5C4" strokeOpacity="0.09" strokeWidth="0.5"
+          style={{ animation: 'pulseRing 4.5s ease-in-out infinite reverse' }} />
+        <circle cx="260" cy="260" r="90" fill="none" stroke="#00E5C4" strokeOpacity="0.14" strokeWidth="0.5"
+          style={{ animation: 'pulseRing 3s ease-in-out infinite' }} />
+        <circle cx="260" cy="260" r="9" fill="#00E5C4" fillOpacity="0.35" />
+        <circle cx="260" cy="260" r="3.5" fill="#00E5C4" />
+        {[0,45,90,135,180,225,270,315].map(a => {
+          const rad = (a - 90) * Math.PI / 180;
+          const x = 260 + 220 * Math.cos(rad);
+          const y = 260 + 220 * Math.sin(rad);
+          return <circle key={a} cx={x} cy={y} r="1.5" fill="#00E5C4" fillOpacity="0.3" />;
+        })}
+      </svg>
+
+      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '2rem' }}>
+        {lines.map((line, i) => (
+          <p key={i} style={{
+            fontFamily: 'var(--serif)',
+            fontStyle: 'italic',
+            fontSize: i === 4 ? '1rem' : '1.125rem',
+            color: i === 4 ? 'var(--teal)' : 'var(--white)',
+            marginBottom: '0.75rem',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+            opacity: stage > i ? 1 : 0,
+            transform: stage > i ? 'translateY(0)' : 'translateY(10px)',
+          }}>
+            {i === 4 ? <strong style={{ fontFamily: 'var(--mono)', fontSize: '0.8125rem', letterSpacing: '0.15em', fontStyle: 'normal', color: 'var(--teal)' }}>Resolving.</strong> : line}
+          </p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Expand Section ───────────────────────────────────────────────────────────
+function ExpandSection({ label, icon, iconColor, children }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="expand-panel">
+      <button className="expand-header" onClick={() => setOpen(!open)}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+          <span style={{ fontSize: '0.8125rem', color: iconColor || 'var(--teal)', fontFamily: 'var(--mono)' }}>{icon}</span>
+          <span style={{ fontSize: '0.8125rem', color: 'var(--mid)', letterSpacing: '0.03em' }}>{label}</span>
+        </div>
+        <span style={{
+          fontSize: '0.5rem', color: 'var(--mid)',
+          transform: open ? 'rotate(180deg)' : 'none',
+          transition: 'transform 0.25s',
+          display: 'inline-block',
+        }}>▼</span>
+      </button>
+      {open && (
+        <div className="expand-body fade-in">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Landing Screen ───────────────────────────────────────────────────────────
+function Landing({ onStart }) {
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem', position: 'relative' }}>
+
+      {/* Geometric mark */}
+      <div style={{ marginBottom: '2.5rem', animation: 'fadeUp 1.2s ease both' }}>
+        <svg width="72" height="72" viewBox="0 0 72 72">
+          <circle cx="36" cy="36" r="26" fill="none" stroke="#00E5C4" strokeOpacity="0.25" strokeWidth="0.5" />
+          {[0,45,90,135,180,225,270,315].map(a => {
+            const rad = (a - 90) * Math.PI / 180;
+            return <circle key={a} cx={36 + 26*Math.cos(rad)} cy={36 + 26*Math.sin(rad)} r="1.5" fill="#00E5C4" fillOpacity="0.6" />;
+          })}
+          <circle cx="36" cy="36" r="3" fill="#00E5C4" />
+          <circle cx="36" cy="36" r="9" fill="none" stroke="#00E5C4" strokeOpacity="0.2" strokeWidth="0.4" />
+        </svg>
+      </div>
+
+      <div style={{ maxWidth: '540px', width: '100%', textAlign: 'center' }}>
+
+        <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.28em', color: 'var(--teal-dim)', textTransform: 'uppercase', marginBottom: '2rem', animation: 'fadeUp 1.2s ease 0.1s both' }}>
+          Eloqaura Communications
+        </p>
+
+        <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2.75rem, 7vw, 4rem)', fontWeight: 400, lineHeight: 1.1, color: 'var(--white)', marginBottom: '0.75rem', animation: 'fadeUp 1.2s ease 0.2s both' }}>
+          E8 Decision<br/>
+          <em style={{ color: 'var(--teal)' }}>Awareness</em> Diagnostic
+        </h1>
+
+        <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.22em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: '2.5rem', animation: 'fadeUp 1.2s ease 0.35s both' }}>
+          Senior Leadership Edition &nbsp;·&nbsp; 5–15 Years Experience
+        </p>
+
+        <div className="divider-teal" style={{ marginBottom: '2.5rem', animation: 'fadeIn 1s ease 0.5s both' }}></div>
+
+        <p style={{ fontSize: '0.9375rem', lineHeight: 1.8, color: 'var(--mid)', marginBottom: '1.5rem', animation: 'fadeUp 1.2s ease 0.6s both' }}>
+          Ten pressure scenarios calibrated to mid-career leadership reality: managing up to boards, navigating political coalitions, holding the line under client escalation, delivering strategic bad news, resolving cross-functional conflict.
+        </p>
+
+        <p style={{ fontSize: '0.8125rem', lineHeight: 1.75, color: 'var(--muted)', marginBottom: '2.5rem', fontStyle: 'italic', fontFamily: 'var(--serif)', animation: 'fadeUp 1.2s ease 0.75s both' }}>
+          At senior level, lower E8 states are sophisticated. They look like leadership until they cost you something you did not see coming.
+        </p>
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', fontSize: '0.6875rem', color: 'var(--muted)', marginBottom: '2.5rem', animation: 'fadeIn 1s ease 0.9s both', fontFamily: 'var(--mono)', letterSpacing: '0.08em' }}>
+          <span>10 scenarios</span>
+          <span style={{ color: 'var(--teal-dim)' }}>·</span>
+          <span>25–40 minutes</span>
+          <span style={{ color: 'var(--teal-dim)' }}>·</span>
+          <span>Free-text responses</span>
+        </div>
+
+        <div style={{ marginBottom: '1.5rem', animation: 'fadeUp 1.2s ease 1.1s both' }}>
+          <button className="btn-primary" onClick={onStart}>Begin the Diagnostic</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Calibration Screen ───────────────────────────────────────────────────────
+function Calibration({ onContinue }) {
+  const items = [
+    { head: '— respond honestly, not aspirationally.', body: 'This is not a test of how a senior leader should respond. It is a diagnostic of how you respond — including the parts that are professionally disguised even to yourself.' },
+    { head: '— at this career stage, lower states are sophisticated.', body: 'Prudent delay, political alignment, evidence-based caution — these are all socially legitimate at senior level. The diagnostic distinguishes the form from the function.' },
+    { head: '— describe what you would actually do.', body: 'What you would say, what you would weigh, what you would navigate. Specificity is the instrument. Generality produces nothing usable.' },
+    { head: '— minimum 35 words per response.', body: 'Less than that, and the diagnostic cannot locate your pattern accurately. There is no correct answer — only an honest one.' },
+  ];
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem' }}>
+      <div style={{ maxWidth: '520px', width: '100%' }}>
+
+        <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.22em', color: 'var(--teal-dim)', textTransform: 'uppercase', marginBottom: '2rem', animation: 'fadeUp 0.8s ease both' }}>
+          Before you begin
+        </p>
+
+        <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem, 5vw, 2.75rem)', fontWeight: 400, color: 'var(--white)', marginBottom: '2.5rem', lineHeight: 1.2, animation: 'fadeUp 0.8s ease 0.15s both' }}>
+          A few notes.
+        </h2>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '3rem' }}>
+          {items.map((item, i) => (
+            <div key={i} style={{ borderLeft: '1px solid rgba(0,229,196,0.2)', paddingLeft: '1.5rem', animation: `fadeUp 0.8s ease ${0.3 + i * 0.15}s both` }}>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: '0.9375rem', color: 'var(--teal)', fontStyle: 'italic', marginBottom: '0.4rem', lineHeight: 1.5 }}>
+                {item.head}
+              </p>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.75 }}>
+                {item.body}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: 'center', animation: 'fadeUp 0.8s ease 1.0s both' }}>
+          <button className="btn-primary" onClick={onContinue}>I understand — begin</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Scenario Screen ──────────────────────────────────────────────────────────
+function ScenarioScreen({ scenario, idx, total, response, setResponse, onNext, isValid, wc, animating, textareaRef }) {
+  const progress = (idx / total) * 100;
+  const isLast = idx === total - 1;
+  const dc = DOMAIN_COLOR[scenario.domain] || 'var(--teal)';
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: '2rem 1.5rem', transition: 'opacity 0.3s', opacity: animating ? 0 : 1 }}>
+
+      {/* Progress header */}
+      <div style={{ maxWidth: '620px', margin: '0 auto', width: '100%', marginBottom: '2.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.625rem' }}>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>
+            E8 Senior Leadership Diagnostic
+          </span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.12em', color: 'var(--mid)' }}>
+            {String(idx+1).padStart(2,'0')} / {String(total).padStart(2,'0')}
+          </span>
+        </div>
+        {/* Tick bar */}
+        <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
+          {Array.from({ length: total }).map((_, i) => (
+            <div key={i} style={{
+              flex: 1, height: '1px',
+              background: i < idx ? 'var(--teal)' : i === idx ? 'rgba(0,229,196,0.5)' : 'rgba(255,255,255,0.06)',
+              transition: 'background 0.4s',
+            }} />
+          ))}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div style={{ maxWidth: '620px', margin: '0 auto', width: '100%', flex: 1 }} className="fade-up">
+
+        <p className="domain-tag" style={{ color: dc, marginBottom: '0.75rem' }}>
+          {scenario.domain}
+        </p>
+
+        <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.625rem, 4vw, 2.25rem)', fontWeight: 400, color: 'var(--white)', marginBottom: '1.5rem', lineHeight: 1.25 }}>
+          {scenario.title}
+        </h2>
+
+        <div style={{ fontSize: '0.9375rem', lineHeight: 1.85, color: 'var(--mid)', marginBottom: '2rem', padding: '1.25rem 1.5rem', background: 'rgba(0,229,196,0.025)', borderLeft: `2px solid ${dc}44` }}>
+          {scenario.prompt}
+        </div>
+
+        <p style={{ fontSize: '0.5625rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '0.5rem', fontFamily: 'var(--mono)' }}>
+          Your response
+        </p>
+
+        <textarea
+          ref={textareaRef}
+          value={response}
+          onChange={e => setResponse(e.target.value)}
+          rows={7}
+          placeholder="Describe specifically what you would do and how — the considerations you would weigh, what you would say, and how you would navigate the dynamics at play..."
+          autoFocus
+        />
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+          <span style={{ fontSize: '0.6875rem', color: wc >= WORD_MIN ? 'var(--teal)' : 'var(--muted)', fontFamily: 'var(--mono)', letterSpacing: '0.06em' }}>
+            {wc} words {wc >= WORD_MIN ? '✓' : `(min ${WORD_MIN})`}
+          </span>
+          <button
+            className="btn-primary"
+            onClick={onNext}
+            disabled={!isValid}
+            style={{ padding: '0.625rem 1.75rem' }}
+          >
+            {isLast ? 'Complete Diagnostic' : 'Continue →'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Results Screen ───────────────────────────────────────────────────────────
+function ResultsScreen({ analysis, onReset }) {
+  const [deepOpen, setDeepOpen] = useState(false);
+  const [gatewayOpen, setGatewayOpen] = useState(false);
+
+  if (!analysis) return null;
+
+  if (analysis.insufficient_data) {
+    return (
+      <div style={{ minHeight: '100vh', padding: '3rem 1.5rem 6rem' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.22em', color: 'var(--teal-dim)', textTransform: 'uppercase', marginBottom: '2rem' }}>
+            Insufficient Signal
+          </p>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 300, color: 'var(--fg-1)', marginBottom: '1.25rem', lineHeight: 1.4 }}>
+            The diagnostic could not identify a pattern.
+          </h2>
+          <p style={{ color: 'var(--fg-2)', fontSize: '0.9375rem', lineHeight: 1.75, marginBottom: '2rem' }}>
+            Your responses did not contain enough signal for the scoring engine to identify a dominant decision-making pattern. This typically means the answers were too brief, too abstract, or did not describe specific actions you would take.
+          </p>
+          <p style={{ color: 'var(--fg-2)', fontSize: '0.9375rem', lineHeight: 1.75, marginBottom: '2.5rem' }}>
+            Return to the scenarios and describe, in concrete terms, exactly what you would say and do — the more specific and personal the language, the more accurate the result.
+          </p>
+          <button onClick={onReset}
+            style={{ padding: '0.75rem 2rem', background: 'var(--teal)', color: '#000', fontFamily: 'var(--mono)', fontSize: '0.75rem', letterSpacing: '0.12em', textTransform: 'uppercase', border: 'none', cursor: 'pointer', borderRadius: '2px' }}>
+            Retake the Assessment
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const ps = E8[analysis.primary_state];
+  const ss = E8[analysis.secondary_state];
+  const scores = analysis.state_scores || {};
+  const sortedStates = Object.entries(scores).sort(([,a],[,b]) => b - a);
+  const maxScore = Math.max(...Object.values(scores), 1);
+
+  const deep = DEEP[analysis.primary_state];
+
+  const deepSections = deep ? [
+    { label: 'i. the pattern beneath', title: 'What the diagnostic actually sees in you', content: deep.pattern },
+    { label: 'ii. what this costs you', title: 'The price of staying here', content: deep.costs },
+    { label: 'iii. the awareness point move', title: 'The split-second where it changes', content: deep.awareness },
+    { label: 'iv. the elevated path', title: 'What shifts when this becomes conscious', content: deep.elevated },
+  ] : [];
+
+  return (
+    <div style={{ minHeight: '100vh', padding: '3rem 1.5rem 6rem' }}>
+      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '1rem' }} className="fade-up">
+          <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.22em', color: 'var(--teal-dim)', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
+            Your Pressure Constellation
+          </p>
+          <div className="divider-teal" style={{ marginBottom: '0' }}></div>
+        </div>
+
+        {/* Primary state title */}
+        <div style={{ textAlign: 'center', padding: '2rem 0 1rem', animation: 'fadeUp 0.9s ease 0.2s both' }}>
+          <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '1rem', color: 'var(--mid)', marginBottom: '0.5rem' }}>
+            Under pressure, you move toward
+          </p>
+          <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(3rem, 8vw, 4.5rem)', fontWeight: 400, color: 'var(--teal)', lineHeight: 1, marginBottom: '0.5rem', letterSpacing: '-0.01em' }}>
+            {analysis.primary_state}
+          </h1>
+          {analysis.secondary_state && (
+            <p style={{ fontSize: '0.75rem', color: 'var(--mid)', fontFamily: 'var(--mono)', letterSpacing: '0.06em' }}>
+              secondary: <span style={{ color: ss?.color }}>{analysis.secondary_state}</span>
+            </p>
+          )}
+        </div>
+
+        {/* ── Constellation ── */}
+        <div style={{ maxWidth: '480px', margin: '0 auto 2rem', animation: 'fadeUp 1s ease 0.4s both' }}>
+          <SeniorConstellation analysis={analysis} animate={true} size={480} />
+        </div>
+
+        {/* Pattern signature */}
+        <div className="glass-panel" style={{ borderColor: `${ps?.color || 'var(--teal)'}44`, padding: '1.75rem 2rem', marginBottom: '2rem', animation: 'fadeUp 0.9s ease 5.5s both' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+            <span style={{ fontSize: '2rem', color: ps?.color || 'var(--teal)', lineHeight: 1, filter: `drop-shadow(0 0 6px ${ps?.color || 'var(--teal)'}55)` }}>{ps?.symbol}</span>
+            <div>
+              <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.2em', color: 'var(--teal-dim)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Primary Pattern</p>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.6 }}>{ps?.senior}</p>
+            </div>
+          </div>
+          <div style={{ borderTop: '1px solid rgba(0,229,196,0.12)', paddingTop: '1.25rem' }}>
+            <p style={{ fontFamily: 'var(--serif)', fontSize: '1.125rem', lineHeight: 1.75, color: 'var(--white)', fontStyle: 'italic' }}>
+              "{analysis.pattern_signature}"
+            </p>
+          </div>
+        </div>
+
+        {/* ── State Distribution ── */}
+        <div style={{ marginBottom: '2.5rem', animation: 'fadeUp 0.9s ease 5.7s both' }}>
+          <p style={{ fontFamily: 'var(--mono)', fontSize: '0.625rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--mid)', marginBottom: '1.25rem' }}>
+            Pattern Distribution
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+            {sortedStates.map(([state, score]) => {
+              const stateColor = E8[state]?.color || 'var(--teal)';
+              const isPrimary = state === analysis.primary_state;
+              const isSecondary = state === analysis.secondary_state;
+              return (
+                <div key={state} style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+                  <span style={{ fontSize: '0.6875rem', color: isPrimary ? 'var(--white)' : isSecondary ? 'var(--mid)' : 'var(--muted)', width: '125px', flexShrink: 0, fontFamily: 'var(--mono)', letterSpacing: '0.04em' }}>
+                    {state}
+                  </span>
+                  <div className="bar-track" style={{ flex: 1 }}>
+                    <div className="bar-fill" style={{
+                      width: `${Math.max((score / maxScore) * 100, 4)}%`,
+                      background: isPrimary
+                        ? `linear-gradient(to right, ${stateColor}88, ${stateColor})`
+                        : stateColor,
+                      opacity: isPrimary ? 1 : isSecondary ? 0.8 : 0.5,
+                      boxShadow: isPrimary ? `0 0 12px ${stateColor}44` : 'none',
+                    }} />
+                  </div>
+                  <span className="score-badge" style={{
+                    background: isPrimary ? `rgba(0,229,196,0.12)` : 'rgba(255,255,255,0.04)',
+                    border: isPrimary ? '1px solid rgba(0,229,196,0.25)' : '1px solid rgba(255,255,255,0.08)',
+                    color: isPrimary ? 'var(--teal)' : 'var(--muted)',
+                    minWidth: '28px', textAlign: 'center',
+                  }}>
+                    {score}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Domain Heat Map ── */}
+        <div className="glass-panel" style={{ marginBottom: '2.5rem', padding: '1.5rem', animation: 'fadeUp 0.9s ease 5.9s both' }}>
+          <DomainHeatMap analysis={analysis} />
+        </div>
+
+        {/* ── Expandable Insight Sections ── */}
+        <div style={{ marginBottom: '2rem', animation: 'fadeUp 0.9s ease 6.1s both' }}>
+          <ExpandSection label="Hidden Cost" icon="⚠" iconColor="var(--coral)">
+            <p style={{ fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--mid)', paddingTop: '0.875rem' }}>
+              {analysis.hidden_cost}
+            </p>
+          </ExpandSection>
+          <ExpandSection label="Awareness Moment" icon="◎" iconColor="var(--teal)">
+            <p style={{ fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--mid)', paddingTop: '0.875rem' }}>
+              {analysis.awareness_moment}
+            </p>
+          </ExpandSection>
+          <ExpandSection label="Development Pathway" icon="→" iconColor="var(--blue)">
+            <p style={{ fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--mid)', paddingTop: '0.875rem' }}>
+              {analysis.development_pathway}
+            </p>
+          </ExpandSection>
+          <ExpandSection label="Senior Level Calibration" icon="✦" iconColor="var(--teal)">
+            <p style={{ fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--mid)', paddingTop: '0.875rem' }}>
+              {analysis.senior_calibration_note}
+            </p>
+          </ExpandSection>
+        </div>
+
+        {/* ── Where Pattern Was Sharpest ── */}
+        {analysis.scenarios_of_note && analysis.scenarios_of_note.length > 0 && (
+          <div className="glass-panel" style={{ marginBottom: '2rem', padding: '1rem 1.25rem', animation: 'fadeUp 0.9s ease 6.3s both' }}>
+            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--teal-dim)', marginBottom: '0.75rem' }}>
+              Where the pattern was sharpest
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {analysis.scenarios_of_note.map((s, i) => (
+                <span key={i} style={{ fontSize: '0.6875rem', color: 'var(--white)', border: '1px solid rgba(0,229,196,0.18)', padding: '0.3rem 0.875rem', fontFamily: 'var(--mono)', background: 'rgba(0,229,196,0.05)' }}>
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── Deep Dive ── */}
+        {deep && (
+          <div style={{ marginBottom: '2.5rem', animation: 'fadeUp 0.9s ease 6.5s both' }}>
+            <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+              <button
+                onClick={() => setDeepOpen(!deepOpen)}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  borderTop: '1px solid rgba(0,229,196,0.2)',
+                  borderBottom: '1px solid rgba(0,229,196,0.2)',
+                  padding: '0.875rem 2rem',
+                  color: deepOpen ? 'var(--teal)' : 'var(--mid)',
+                  fontFamily: 'var(--mono)', fontSize: '0.6875rem',
+                  letterSpacing: '0.15em', textTransform: 'uppercase',
+                  transition: 'color 0.25s',
+                  display: 'block', width: '100%',
+                }}
+              >
+                {deepOpen ? '— close the diagnostic depth —' : '— read the full diagnostic depth —'}
+              </button>
+              {!deepOpen && (
+                <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '0.75rem', color: 'var(--muted)', marginTop: '0.75rem' }}>
+                  Four sections. The pattern, the cost, the awareness point, the elevated path.
+                </p>
+              )}
+            </div>
+
+            {deepOpen && (
+              <div style={{ marginTop: '2.5rem' }} className="fade-in">
+                {deepSections.map((sec, i) => (
+                  <section key={i} style={{ borderTop: i > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none', paddingTop: i > 0 ? '3rem' : '0', marginBottom: '3rem' }}>
+                    <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5rem', letterSpacing: '0.2em', color: 'var(--teal-dim)', textTransform: 'uppercase', marginBottom: '0.75rem', textAlign: 'center' }}>
+                      {sec.label}
+                    </p>
+                    <h3 style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: 'var(--white)', textAlign: 'center', marginBottom: '2rem', lineHeight: 1.3 }}>
+                      {sec.title}
+                    </h3>
+                    <div style={{ fontSize: '0.9rem', lineHeight: 1.85, color: 'rgba(223,240,238,0.8)' }}>
+                      {sec.content.split('\n\n').map((p, pi) => (
+                        <p key={pi} style={{ marginBottom: '1rem' }}>{p}</p>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── Gateway Question ── */}
+        <div className="glass-panel" style={{ borderColor: 'rgba(0,229,196,0.22)', padding: '1.5rem 1.75rem', marginBottom: '2.5rem', animation: 'fadeUp 0.9s ease 6.7s both' }}>
+          <button
+            onClick={() => setGatewayOpen(!gatewayOpen)}
+            style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
+          >
+            <div>
+              <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.2em', color: 'var(--teal-dim)', textTransform: 'uppercase', marginBottom: '0.3rem' }}>
+                A Leadership Question
+              </p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>For leaders who champion this diagnostic for their teams</p>
+            </div>
+            <span style={{ fontSize: '0.5625rem', color: 'var(--mid)', marginTop: '0.25rem', transform: gatewayOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.25s', display: 'inline-block' }}>▼</span>
+          </button>
+
+          {gatewayOpen && (
+            <div style={{ borderTop: '1px solid rgba(0,229,196,0.12)', marginTop: '1.25rem', paddingTop: '1.25rem' }} className="fade-in">
+              <p style={{ fontFamily: 'var(--serif)', fontSize: '1rem', lineHeight: 1.8, color: 'var(--white)', fontStyle: 'italic', marginBottom: '1.25rem' }}>
+                "{analysis.gateway_observation}"
+              </p>
+              <p style={{ fontSize: '0.75rem', lineHeight: 1.75, color: 'var(--mid)' }}>
+                The E8 model has a first-manager equivalent — calibrated to the pressures of leading others for the first time: difficult feedback conversations, authority without positional security, the shift from doing to enabling. If this diagnostic surfaced something meaningful for you, it is likely to surface something instructive for your managers. The question is whether they have the language to see it.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* ── Closing Reflection ── */}
+        <div style={{ textAlign: 'center', padding: '2.5rem 1rem', borderTop: '1px solid rgba(255,255,255,0.06)', marginBottom: '2.5rem', animation: 'fadeUp 0.9s ease 6.9s both' }}>
+          <p style={{ fontFamily: 'var(--serif)', fontSize: '1.125rem', lineHeight: 1.85, color: 'var(--white)', fontStyle: 'italic', marginBottom: '1rem' }}>
+            "The real question is not 'Which state am I?' It is: 'Which state do I choose — and when does the choosing become invisible to me?'"
+          </p>
+          <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.18em', color: 'var(--teal-dim)', textTransform: 'uppercase' }}>
+            E8 Decision Awareness Model
+          </p>
+        </div>
+
+        {/* ── Programme Bridge ── */}
+        {(() => {
+          const prog = PROGRAMMES[analysis.primary_state];
+          if (!prog) return null;
+          return (
+            <div style={{ borderTop: '1px solid rgba(0,229,196,0.15)', paddingTop: '3rem', marginBottom: '3rem', animation: 'fadeUp 0.9s ease 7.1s both' }}>
+              <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.22em', color: 'var(--teal-dim)', textTransform: 'uppercase', textAlign: 'center', marginBottom: '1.25rem' }}>
+                the work, if you choose it
+              </p>
+              <h3 style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(1.75rem, 5vw, 2.5rem)', color: 'var(--white)', textAlign: 'center', marginBottom: prog.supporting ? '0.4rem' : '1.5rem', lineHeight: 1.2 }}>
+                {prog.primary}
+              </h3>
+              {prog.supporting && (
+                <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '0.875rem', color: 'var(--teal-dim)', textAlign: 'center', marginBottom: '1.75rem' }}>
+                  with <em>{prog.supporting}</em>
+                </p>
+              )}
+              <p style={{ fontSize: '0.875rem', lineHeight: 1.85, color: 'var(--mid)', textAlign: 'center', maxWidth: '480px', margin: '0 auto 2rem' }}>
+                {prog.message}
+              </p>
+              {analysis.combo_note && (
+                <div style={{ maxWidth: '480px', margin: '0 auto 2rem', padding: '1rem 1.25rem', background: 'rgba(0,229,196,0.04)', border: '1px solid rgba(0,229,196,0.15)', borderRadius: '2px' }}>
+                  <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--teal-dim)', marginBottom: '0.5rem' }}>
+                    Primary + Secondary pattern
+                  </p>
+                  <p style={{ fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--mid)' }}>
+                    {analysis.combo_note}
+                  </p>
+                </div>
+              )}
+              {analysis.domain_note && (
+                <div style={{ maxWidth: '480px', margin: '0 auto 2.5rem', padding: '1rem 1.25rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '2px' }}>
+                  <p style={{ fontFamily: 'var(--mono)', fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--mid)', marginBottom: '0.5rem' }}>
+                    Domain focus
+                  </p>
+                  <p style={{ fontSize: '0.8125rem', lineHeight: 1.8, color: 'var(--mid)' }}>
+                    {analysis.domain_note}
+                  </p>
+                </div>
+              )}
+              <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                <a
+                  href={`mailto:hello@eloqaura.com?subject=E8 Senior Diagnostic — ${analysis.primary_state} — Programme Enquiry&body=I have completed the E8 Senior Leadership Diagnostic.%0A%0APrimary state: ${analysis.primary_state}%0ASecondary state: ${analysis.secondary_state || 'None detected'}%0A%0AI would like to enquire about ${prog.primary}.`}
+                  className="btn-primary"
+                  style={{ textDecoration: 'none', display: 'inline-block' }}
+                >
+                  Enquire About This Programme
+                </a>
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '1.25rem' }}>
+                <a
+                  href="https://eloqaura.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontFamily: 'var(--mono)', fontSize: '0.5625rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--teal-dim)', textDecoration: 'none', borderBottom: '1px solid rgba(0,229,196,0.25)', paddingBottom: '0.15rem' }}
+                >
+                  eloqaura.com
+                </a>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* ── Footer ── */}
+        <div style={{ textAlign: 'center', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.04)', animation: 'fadeUp 0.9s ease 7.3s both' }}>
+          <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '0.8125rem', color: 'var(--muted)' }}>
+            Eloqaura Communications — leadership communication, decisive.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ─── Error Screen ─────────────────────────────────────────────────────────────
+function ErrorScreen({ error, onRetry }) {
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1.5rem', padding: '2rem', textAlign: 'center' }}>
+      <p style={{ fontSize: '0.875rem', color: 'var(--coral)', maxWidth: '380px', lineHeight: 1.7 }}>{error}</p>
+      <button className="btn-ghost" onClick={onRetry}>Return to start</button>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  APP ROOT
+// ═══════════════════════════════════════════════════════════════════════════════
+function App() {
+  const [screen, setScreen] = useState('landing');
+  const [scenarioIdx, setScenarioIdx] = useState(0);
+  const [responses, setResponses] = useState({});
+  const [currentText, setCurrentText] = useState('');
+  const [animating, setAnimating] = useState(false);
+  const [analysis, setAnalysis] = useState(null);
+  const [error, setError] = useState('');
+  const textareaRef = useRef(null);
+
+  const wc = wordCount(currentText);
+  const isValid = wc >= WORD_MIN;
+
+  const handleNext = useCallback(() => {
+    if (!isValid) return;
+    const updated = { ...responses, [SCENARIOS[scenarioIdx].id]: currentText };
+    setResponses(updated);
+
+    if (scenarioIdx < SCENARIOS.length - 1) {
+      setAnimating(true);
+      setTimeout(() => {
+        setScenarioIdx(i => i + 1);
+        setCurrentText('');
+        setAnimating(false);
+        textareaRef.current?.focus();
+      }, 280);
+    } else {
+      runAnalysis(updated);
+    }
+  }, [isValid, responses, scenarioIdx, currentText]);
+
+  const runAnalysis = (allResponses) => {
+    setScreen('analyzing');
+    setTimeout(() => {
+      const result = aggregateResults(allResponses);
+      if (result.insufficient_data) {
+        setAnalysis({ insufficient_data: true });
+        setScreen('results');
+        return;
+      }
+      setAnalysis(result);
+      setScreen('results');
+    }, 6800);
+  };
+
+  const reset = () => {
+    setScreen('landing');
+    setScenarioIdx(0);
+    setResponses({});
+    setCurrentText('');
+    setAnalysis(null);
+    setError('');
+  };
+
+  if (screen === 'landing') return <Landing onStart={() => setScreen('calibration')} />;
+  if (screen === 'calibration') return <Calibration onContinue={() => setScreen('scenarios')} />;
+  if (screen === 'scenarios') return (
+    <ScenarioScreen
+      scenario={SCENARIOS[scenarioIdx]}
+      idx={scenarioIdx}
+      total={SCENARIOS.length}
+      response={currentText}
+      setResponse={setCurrentText}
+      onNext={handleNext}
+      isValid={isValid}
+      wc={wc}
+      animating={animating}
+      textareaRef={textareaRef}
+    />
+  );
+  if (screen === 'analyzing') return <RevealSequence onComplete={() => {}} />;
+  if (screen === 'results') return <ResultsScreen analysis={analysis} onReset={reset} />;
+  if (screen === 'error') return <ErrorScreen error={error} onRetry={reset} />;
+  return null;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
